@@ -39,9 +39,9 @@ Golang本身为了性能和内存可控，整个内存管理是完全封闭不�
 
 1. 除Go本身的内存模块，调研了解现有大部分的第三方 对象池/内存池/字节池 等需要某块自主内存操作的场景中基本是Map/sync.Pool/Bytes[] 等方式。
 
-2. Map数据结构适合保存各类型数据，但GC概率大； sync.Pool 这类保存复用临时对象，也可以各种数据机构，可适当减少GC（无法避免GC）； Bytes[] 方式来保存字节数据，并且只能保存字节数据，通过某些处理，尽量逃避GC扫描；（对比参考 [Go语言基于channel实现的并发安全的字节池](https://zhuanlan.zhihu.com/p/265790840){target="_blank"} ）
+2. Map数据结构适合保存各类型数据，但GC概率大； sync.Pool 这类保存复用临时对象，也可以各种数据机构，可适当减少GC（无法避免GC）； Bytes[] 方式来保存字节数据，并且只能保存字节数据，通过某些处理，尽量逃避GC扫描；（对比参考 [Go语言基于channel实现的并发安全的字节池](https://zhuanlan.zhihu.com/p/265790840) ）
 
-3. 现有开源库包括：依赖于 sync.Pool 的比如字节的mcache [gopkg/mcache.go](https://github.com/bytedance/gopkg/blob/main/lang/mcache/mcache.go){target="_blank"} ；采用Bytes[]方式的比如MinIO 的 [bpool minio/bpool.go](https://github.com/minio/minio/blob/master/internal/bpool/bpool.go){target="_blank"} ，都可以学习参考。
+3. 现有开源库包括：依赖于 sync.Pool 的比如字节的mcache [gopkg/mcache.go](https://github.com/bytedance/gopkg/blob/main/lang/mcache/mcache.go) ；采用Bytes[]方式的比如MinIO 的 [bpool minio/bpool.go](https://github.com/minio/minio/blob/master/internal/bpool/bpool.go) ，都可以学习参考。
 
 4. 结论：XMM与他们实现机制完全不同，XMM更靠近Go内置内存分配机制原理
 
