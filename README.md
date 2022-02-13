@@ -136,3 +136,17 @@ func main() {
 
 
 ```
+
+
+
+## XMM问题反馈
+
+XMM 目前是0.1版本，总体性能比较好，目前也在另外一个自研的XMap模块中使用，当然也少不了一些问题和bug，欢迎大家一起共创，或者直接提交PR等等。
+
+欢迎加入XMM技术交流微信群，要加群，可以先添加如下微信让对方拉入群：
+
+
+![image](https://raw.githubusercontent.com/heiyeluren/docs/master/imgs/koala_wx.png)
+
+
+
