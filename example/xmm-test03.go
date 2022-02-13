@@ -8,7 +8,8 @@
 package main
 
 import (
-	xmm "xmm/src"
+	//xmm "xmm/src"
+	xmm "github.com/heiyeluren/xmm/src"
 	"strconv"
 	"strings"
 	"fmt"
