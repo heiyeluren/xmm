@@ -11,7 +11,6 @@ import (
 	xmm "github.com/heiyeluren/xmm/src"
 	"fmt"
 	"unsafe"
-	//_ "github.com/spf13/cast"
 )
 
 func main() {
