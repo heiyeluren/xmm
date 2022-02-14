@@ -22,7 +22,6 @@ import (
 	"errors"
 	"fmt"
 	"unsafe"
-	"reflect"
 )
 
 var NilError = errors.New("params is illegal")
@@ -38,6 +37,7 @@ type stringAllocator interface {
 	From(content string) (p string, err error)
 	From2(item1 string, item2 string) (newItem1 string, newItem2 string, err error)
 	FromInAddr(addr uintptr, contents ...string) (p []*string, err error)
+	FreeString(content string) error
 }
 
 type Chunk struct {
@@ -50,7 +50,6 @@ type XMemory interface {
 	stringAllocator
 	RawAlloc(pageNum uintptr) (p *Chunk, err error)
 	GetPageSize() uintptr
-	FreeString(content string) error
 }
 
 type mm struct {
@@ -114,9 +113,10 @@ func (m *mm) Free(addr uintptr) error {
 }
 
 func (m *mm) FreeString(content string) error {
-	sh := (*reflect.SliceHeader)(unsafe.Pointer(&content))
-	return m.Free(sh.Data)
+	return m.sa.FreeString(content)
 }
+
+
 
 func (m *mm) GetPageSize() uintptr {
 	return _PageSize

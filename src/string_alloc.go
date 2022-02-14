@@ -113,3 +113,10 @@ func (sa *xStringAllocator) From(content string) (p string, err error) {
 	}
 	return *(*string)(unsafe.Pointer(&dst)), err
 }
+
+
+func (sa *xStringAllocator) FreeString(content string)error{
+	sh := (*reflect.StringHeader)(unsafe.Pointer(&content))
+	return sa.sp.Free(sh.Data)
+}
+
