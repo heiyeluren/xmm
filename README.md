@@ -1,5 +1,6 @@
 
-![XMM Logo](https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-logo02.png)
+<img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-logo02.png width=50% />
+
 
 
 
