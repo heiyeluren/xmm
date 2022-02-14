@@ -88,7 +88,13 @@ Golang本身为了性能和内存可控，整个内存管理是完全封闭不�
 ### XMM技术交流
 欢迎加入XMM技术交流微信群，要加群，可以先添加如下微信让对方拉入群：
 
-<img src=https://raw.githubusercontent.com/heiyeluren/docs/master/imgs/koala_wx.png width=20% />
+<img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx.png width=40% />
+
+<br /><br />
+也可以直接扫描加入微信群（七天后失效）：
+<br />
+
+<img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx-group.png width=40% />
 
 
 
