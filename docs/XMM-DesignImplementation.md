@@ -1,13 +1,20 @@
 
 # XMM的核心设计与实现流程
 
-
+- [XMM的核心设计与实现流程](#xmm的核心设计与实现流程)
+    - [设计思考与要求](#设计思考与要求)
+    - [1、模块设计图](#1模块设计图)
+    - [2、数据结构](#2数据结构)
+    - [3、流程图](#3流程图)
+      - [3.1、启动分配 Start](#31启动分配-start)
+      - [3.2、申请内存 Alloc](#32申请内存-alloc)
+      - [3.3、申请span流程 Alloc span](#33申请span流程-alloc-span)
 <br />
 
 ### 设计思考与要求
 
 XMM - X(eXtensible) Memory Manager（完全自主研发的第三方Go内存分配管理器）
-XMM是一个在Go语言环境中完全自主实现的第三方内存管理库，不依赖于Go本身的任何内存管理能力，纯自主实现的Go内存管理库；能够应对各种场景下大小内存的 分配/释放/管理 等工作，能够帮助适用于任何复杂数据结构的构建（链表/数组/树/hash等场景），能够良好完美的逃逸吊Go内置的GC机制，保证程序的超高性能，是构建高性能程序基础设施。
+XMM是一个在Go语言环境中完全自主实现的第三方内存管理库，不依赖于Go本身的任何内存管理能力，纯自主实现的Go内存管理库；能够应对各种场景下大小内存的 分配/释放/管理 等工作，能够帮助适用于任何复杂数据结构的构建（链表/数组/树/hash等场景），能够良好完美的逃逸掉Go内置的GC机制，保证程序的超高性能，是构建高性能程序基础设施。
 
 XMM主要特点：
 
@@ -18,7 +25,7 @@ XMM主要特点：
 
 <br />
 
-为了达成以上的目标，进行了很多内存分配器的调研学习，通过golang malloc / tcmalloc 的学习，发现golang有高性能对象分配方式，但是需要对大对象GC买单：超大对象的GC会带来长时间的STP。面对我们大数据量的LocalCache显然不是那么友好，不能满足我们需求，所以，我们需要设计一个不参与gc的高性能内存分配。
+为了达成以上的目标，进行了很多内存分配器的调研学习，通过golang malloc / tcmalloc 的学习，发现golang有高性能对象分配方式，但是需要对大对象GC买单：超大对象的GC会带来长时间的STP。面对我们大数据量的LocalCache显然不是那么友好，不能满足我们需求，所以，我们需要设计一个不参与GC的高性能内存分配。
 （更多实现细节建议阅读源码）
 
 <br />
@@ -35,12 +42,12 @@ XMM主要特点：
 //核心堆结构
 type xHeap struct {
   lock sync.mutex
-  
+
   freeChunks *FreeChunkTree  // 红黑树
   rawMemorys rawMemory
-  
+
   addrMap []*[]*rawMemory  //addr -> page -> rawMemory 关系
-  allchunk []*chunk  
+  allchunk []*chunk
 }
 ​
 ​//Span池
@@ -52,20 +59,20 @@ type spanPool struct{
 //写无锁atomic、扩容必须得全局锁
 type span struct{
   lock sync.mutex
-  
+
   classIndex uint  // class的索引
   classSize uint   //  classSpan的长度
-  
-  startAddr uintptr 
-  npages    uintptr 
+
+  startAddr uintptr
+  npages    uintptr
   freeIndex uintptr
   fact float32 // 扩容负载因子
 }
 ​
 //连续page的管理
 type chunk struct {
-  startAddr uintptr 
-  npages    uintptr 
+  startAddr uintptr
+  npages    uintptr
 }
 ​
 //用来管理mmap申请的内存，用于实际存放地址的元数据
@@ -100,5 +107,3 @@ type rawMemory struct {
 ![这是图片](https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/di04.png)
 
 <br />
-
-

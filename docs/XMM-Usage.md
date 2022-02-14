@@ -1,6 +1,11 @@
 
 ## XMM如何使用案例说明
-
+- [XMM如何使用案例说明](#xmm如何使用案例说明)
+	- [XMM使用示例一：](#xmm使用示例一)
+		- [示例二：如何在结构体中使用XMM](#示例二如何在结构体中使用xmm)
+	- [示例三：使用XMM构建一个链表](#示例三使用xmm构建一个链表)
+	- [示例四：使用XMM构建一个哈希表](#示例四使用xmm构建一个哈希表)
+- [XMM问题反馈](#xmm问题反馈)
 <br />
 <br />
 
@@ -420,7 +425,7 @@ func (h *XHashTable) Set(Key string, Value interface{}) (error)  {
 	pEntity := (*XEntity)(p)
 	pEntity.Key = pKey
 	pEntity.Value = pVal
-	
+
 	//---------------
 	// 挂接到Bucket
 	//---------------
