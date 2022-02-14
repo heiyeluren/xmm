@@ -408,6 +408,7 @@ func main() {
 
 ```go
 
+
 /*
    XMM 简单示例 - 03
 
@@ -619,9 +620,9 @@ func (h *XHashTable) Remove(Key string)(error) {
 			//释放内存
 			//p := bucket.Data.Key
 			//h.mm.Free(p)
-			//h.mm.Free(bucket.Data.Key)
-			//h.mm.Free(bucket.Data.Value)
-			//h.mm.Free(bucket.Data)
+			h.mm.FreeString(bucket.Data.Key)
+			h.mm.FreeString(bucket.Data.Value)
+			h.mm.Free(uintptr(unsafe.Pointer(bucket.Data)))
 			//h.mm.Free(bucket)
 			h.Size = h.Size - 1
 			return nil
@@ -758,6 +759,8 @@ func main() {
 	//结束
 	fmt.Println("\n===== Example test success ======\n")
 }
+
+
 
 
 
