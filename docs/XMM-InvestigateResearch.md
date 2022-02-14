@@ -12,9 +12,9 @@
 
 ### 1、调研背景
 
-为了解决golang的大内存GC问题，需要深入了解Golang的内存分配原理，Golang的内存分配器思想来源于tcmalloc，他继承了TcMalloc的高性能、高内存利用率等优点。实际上与tcmalloc有区别的，同时融入了自己的定制化内容。现在我们先了解下TcMalloc的实现原理。
+为了解决Golang的大内存GC问题，需要深入了解Golang的内存分配原理，Golang的内存分配器思想来源于TCMalloc，他继承了TCMalloc的高性能、高内存利用率等优点。实际上与TCMalloc有区别的，同时融入了自己的定制化内容。现在我们先了解下TCMalloc的实现原理。
 
-说明：TcMalloc - Multi-threaded memory allocate（Goolge开发的内存分配器）
+说明：TcMalloc - Multi-threaded memory allocate（Goolge开发的内存分配器）[github.com/google/tcmalloc](https://github.com/google/tcmalloc)
 
 <br />
 
