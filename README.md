@@ -79,7 +79,7 @@ Golang本身为了性能和内存可控，整个内存管理是完全封闭不�
 
 ## XMM实现原理介绍
 
-1. [XMM的核心设计与实现流程](https://github.com/heiyeluren/XMM/blob/main/docs/DesignImplementation.md)
+1. [XMM的核心设计与实现流程](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-DesignImplementation.md)
 1. [XMM设计实现技术调研参考]()
 
 
