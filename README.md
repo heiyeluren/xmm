@@ -2,7 +2,7 @@
 <br />
 <br />
 
-#### XMM是什么？
+## XMM是什么？
 
 XMM - X(eXtensible) Memory Manager（完全自主研发的第三方Go内存分配管理器）
 
@@ -64,8 +64,28 @@ Golang本身为了性能和内存可控，整个内存管理是完全封闭不�
 
 
 <br />
+<br />
 
-##### XMM技术交流
+## XMM快速使用入门
+
+说明：XMM测试程序快速预览下载使用
+1. [XMM使用-入门](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test00.go)
+2. [XMM使用-结构体](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test01.go)
+3. [XMM使用-链表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test02.go)
+4. [XMM使用-哈希表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test03.go)
+
+<br /> <br />
+
+
+## XMM实现原理介绍
+
+1. [XMM的核心设计与实现流程]()
+1. [XMM设计实现技术调研参考]()
+
+
+<br /> <br />
+
+### XMM技术交流
 欢迎加入XMM技术交流微信群，要加群，可以先添加如下微信让对方拉入群：
 
 <img src=https://raw.githubusercontent.com/heiyeluren/docs/master/imgs/koala_wx.png width=20% />
@@ -76,18 +96,16 @@ Golang本身为了性能和内存可控，整个内存管理是完全封闭不�
 <br />
 <br />
 
-## XMM如何使用？
 
+
+
+<hr>
+<br />
 <br />
 
-说明：XMM测试程序快速预览下载使用
-1. [XMM使用-入门](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test00.go)
-2. [XMM使用-结构体](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test01.go)
-3. [XMM使用-链表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test02.go)
-4. [XMM使用-哈希表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test03.go)
+## XMM如何使用案例说明
 
 <br />
-
 <br />
 
 ### XMM使用示例一：
