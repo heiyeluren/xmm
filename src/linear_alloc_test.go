@@ -65,7 +65,7 @@ func TestLinearAlloc2(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	node := (*entry.NodeEntry)(p)
+	node := (*NodeEntry)(p)
 
 	var wait sync.WaitGroup
 	wait.Add(10)
@@ -99,14 +99,14 @@ func TestLinearAlloc3(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(unsafe.Sizeof(entry.NodeEntry{}), uintptr(p), round(uintptr(p), pageSize), unsafe.Offsetof(entry.NodeEntry{}.Next))
-	fmt.Println(round(unsafe.Sizeof(entry.NodeEntry{}), 8), round(unsafe.Sizeof(A{}), 8))
+	fmt.Println(unsafe.Sizeof(NodeEntry{}), uintptr(p), round(uintptr(p), pageSize), unsafe.Offsetof(NodeEntry{}.Next))
+	fmt.Println(round(unsafe.Sizeof(NodeEntry{}), 8), round(unsafe.Sizeof(A{}), 8))
 
 	//todo 怀疑是这个内存没有对齐     -120 cache line 0.01s    -80 0.09s     -20 0.22s
 	//todo 对齐
 	ptr := uintptr(p) + pageSize*101 - 1500
 	fmt.Println(ptr, ptr%8, round(ptr, pageSize), round(ptr+80, pageSize))
-	node := (*entry.NodeEntry)(unsafe.Pointer(ptr))
+	node := (*NodeEntry)(unsafe.Pointer(ptr))
 	var wait sync.WaitGroup
 	wait.Add(10)
 	t11 := time.Now()
@@ -137,5 +137,4 @@ func TestLinearCopyAlloc4(t *testing.T) {
 	}
 	ptr := uintptr(p) + pageSize*101 - 1500
 	fmt.Println(float64(pageSize*101)*0.1/8.0, ptr)
-
 }
