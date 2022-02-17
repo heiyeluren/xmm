@@ -10,6 +10,18 @@
 <br />
 <br />
 
+<br />
+
+### 直接查看对应代码
+
+1. [XMM 使用 - 入门](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test00.go)
+2. [XMM 使用 - 结构体](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test01.go)
+3. [XMM 使用 - 链表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test02.go)
+4. [XMM 使用 - 哈希表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test03.go)
+
+
+<br />
+
 ### 示例一：XMM 快速使用入门
 
 XMM 的使用非常简单方便，我们直接通过代码来看。
@@ -28,7 +40,7 @@ package main
 
 import (
 	//xmm "xmm/src"
-	xmm "github.com/heiyeluren/xmm/src"
+	xmm "github.com/heiyeluren/xmm"
 	"fmt"
 	"unsafe"
 )
@@ -100,7 +112,7 @@ package main
 
 import (
 	//xmm "xmm/src"
-	xmm "github.com/heiyeluren/xmm/src"
+	xmm "github.com/heiyeluren/xmm"
 	"fmt"
 	"unsafe"
 )
@@ -187,7 +199,7 @@ package main
 
 import (
 	//xmm "xmm/src"
-	xmm "github.com/heiyeluren/xmm/src"
+	xmm "github.com/heiyeluren/xmm"
 	"fmt"
 	"unsafe"
 )
@@ -340,7 +352,7 @@ package main
 
 import (
 	//xmm "xmm/src"
-	xmm "github.com/heiyeluren/xmm/src"
+	xmm "github.com/heiyeluren/xmm"
 	"strconv"
 	"strings"
 	"fmt"
@@ -696,7 +708,7 @@ func main() {
 
 ## XMM问题反馈
 
-XMM 目前是0.1版本，总体性能比较好，目前也在另外一个自研的XMap模块中使用，当然也少不了一些问题和bug，欢迎大家一起共创，或者直接提交PR等等。
+XMM 目前是早期版本，总体性能比较好，目前也在另外一个自研的XMap模块中使用，当然也少不了一些问题和bug，欢迎大家一起共创，或者直接提交PR等等。
 
 欢迎加入XMM技术交流微信群，要加群，可以先添加如下微信让对方拉入群：
 
