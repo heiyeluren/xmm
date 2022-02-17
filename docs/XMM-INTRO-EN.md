@@ -100,7 +100,7 @@ To ensure high performance, the XMM was designed with three core objectives in m
 
 ## XMM Quick Start
 
-### ☆ [XMM Use Case](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-Usage.md) ☆
+### ☆ [XMM Use Case](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-Usage-EN.md) ☆
 
 <br />
 
