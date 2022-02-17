@@ -1,10 +1,15 @@
 
 <img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-logo02.png width=50% />
 
+## ➤ [XMM English Introduction Document](https://github.com/heiyeluren/XMM/blob/v.0.2.0/docs/XMM-INTRO-EN.md)
 
 
+<br />
+<br />
 
-# XMM (eXtensible) Memory Manager - 完全自主第三方 Go 内存分配管理器
+
+## ➤ XMM中文文档
+## XMM (eXtensible) Memory Manager - 完全自主第三方 Go 内存分配管理器
 
 - [XMM (eXtensible) Memory Manager - 完全自主第三方 Go 内存分配管理器](#xmm-extensible-memory-manager---完全自主第三方-go-内存分配管理器)
   - [XMM 是什么？](#xmm-是什么)
