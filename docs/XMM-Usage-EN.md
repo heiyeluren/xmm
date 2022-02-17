@@ -44,14 +44,21 @@ Description: Build some complex data structure applications with XMM, build a ha
 - [XMM Usage - Hash Tables](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test03.go)
 
 <br />
+<br /> 
 <br />
 
+### XMM Technology Exchange Community
 
-## XMM问题反馈
+XMM is currently an early version, the overall performance is relatively good, and is also currently used in another self-developed XMap module, of course, there are also some problems and bugs, welcome everyone to create together, you can submit issues and PR, etc..
 
-XMM 目前是早期版本，总体性能比较好，目前也在另外一个自研的XMap模块中使用，当然也少不了一些问题和bug，欢迎大家一起共创，或者直接提交PR等等。
+You can also send emails to the author for communication, and if you are convenient to use WeChat, you can add the author's WeChat.
 
-欢迎加入XMM技术交流微信群，要加群，可以先添加如下微信让对方拉入群：
+<br />
 
+#### Author's email: heiyeluren@gmail.com / heiyeluren@qq.com
+#### Author's WeChat: (swipe to add)
+<br />
+<img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx.png width=40% />
 
-![image](https://raw.githubusercontent.com/heiyeluren/docs/master/imgs/koala_wx.png)
+<br /><br />
+<br />
