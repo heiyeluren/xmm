@@ -121,6 +121,14 @@ Golang 本身为了性能和内存可控，整个内存管理是完全封闭不�
 1. [XMM 的核心设计与实现流程](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-DesignImplementation.md)
 1. [XMM 设计实现技术调研参考](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-InvestigateResearch.md)
 
+<br />
+
+### XMM 项目开发者
+
+| 项目角色      | 项目成员 |
+| ----------- | ----------- |
+| 项目发起人/负责人      | 黑夜路人( @heiyeluren ) <br />老张 ( @Zhang-Jun-tao )       |
+| 项目开发者   | 老张 ( @Zhang-Jun-tao ) <br />黑夜路人( @heiyeluren ) <br /> Viktor ( @guojun1992 )        |
 
 <br /> <br />
 
