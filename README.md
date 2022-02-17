@@ -128,7 +128,8 @@ Golang 本身为了性能和内存可控，整个内存管理是完全封闭不�
 
 XMM 目前是早期版本，总体性能比较好，目前也在另外一个自研的 XMap 模块中使用，当然也少不了一些问题和 bug，欢迎大家一起共创，或者直接提交 PR 等等。
 
-欢迎加入 XMM 技术交流微信群，要加群，可以先添加如下微信让对方拉入群：
+欢迎加入 XMM 技术交流微信群，要加群，可以先添加如下微信让对方拉入群：<br />
+（如无法看到图片，请手工添加微信： xiehualiang）
 
 <img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx.png width=40% />
 
