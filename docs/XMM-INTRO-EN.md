@@ -44,7 +44,7 @@ XMM is a good and perfect way to escape Go's built-in GC mechanism to ensure hig
 
 4. XMM is process-safe and has very high allocation performance, currently reaching 350w alloc/s on a normal Linux server, which means that it can perform 3.5 million memory allocation operations per second without lagging, making it ideal for scenarios where you want to manage memory autonomously and with high performance.
 
-The XMM memory library has a simple interface and is compatible with Go 1.8 and above, so it is easy to get started (go 1.12+ is recommended) and can be used to reconstruct all the high-performance data structures you want on top of XMM, such as map/slice and so on. (The examples section can be used as a reference for some data structure implementations)
+5. The XMM memory library has a simple interface and is compatible with Go 1.8 and above, so it is easy to get started (go 1.12+ is recommended) and can be used to reconstruct all the high-performance data structures you want on top of XMM, such as map/slice and so on. (The examples section can be used as a reference for some data structure implementations)
 
 
 <br />
