@@ -4,136 +4,136 @@
 
 
 
-# XMM (eXtensible) Memory Manager - 完全自主第三方 Go 内存分配管理器
+# XMM (eXtensible) Memory Manager - High performance Go memory manager
 
-- [XMM (eXtensible) Memory Manager - 完全自主第三方 Go 内存分配管理器](#xmm-extensible-memory-manager---完全自主第三方-go-内存分配管理器)
-  - [XMM 是什么？](#xmm-是什么)
-    - [XMM 主要具备以下特点](#xmm-主要具备以下特点)
-  - [为什么要设计 XMM？](#为什么要设计-xmm)
-    - [为什么要设计自主的内存管理器？](#为什么要设计自主的内存管理器)
-    - [为什么不使用内置的 map/slice 等数据结构？](#为什么不使用内置的-mapslice-等数据结构)
-    - [为什么不使用其他开源的内存池？](#为什么不使用其他开源的内存池)
-    - [XMM 的最终设计结论是什么？](#xmm-的最终设计结论是什么)
-    - [XMM 设计的目标是什么？](#xmm-设计的目标是什么)
-  - [XMM 快速使用入门](#xmm-快速使用入门)
-    - [☆ XMM 使用案例 ☆](#-xmm-使用案例-)
-  - [XMM 实现原理介绍](#xmm-实现原理介绍)
-    - [XMM 技术交流](#xmm-技术交流)
+- [XMM (eXtensible) Memory Manager - fully-autonomous-third-party-go-memory-allocation-manager]
+  - What is [XMM?] (#xmm-what-is-it)
+    - [XMM has the following main features]
+  - [Why design XMM?] 
+    - [Why design an autonomous memory manager?] 
+    - [Why not use built-in data structures like map/slice?] 
+    - [Why not use other open source memory pools?] 
+    - [What is the final design conclusion of XMM?]
+    - [What are the goals of the XMM design?] 
+  - [XMM Quick Start]
+    - [☆ XMM Use Cases ☆]
+  - [XMM Implementation Principles]
+    - [XMM Technology Exchange]
 
 
 
 
 <br />
 
-## XMM 是什么？
+## What is XMM?
 
-XMM - X(eXtensible) Memory Manager（完全自主研发的第三方 Go 内存分配管理器）
+XMM - X(eXtensible) Memory Manager (high performance third party Go memory allocation manager)
 
-XMM 是一个在 Go 语言环境中完全自主实现的第三方内存管理库，不依赖于 Go 本身的任何内存管理能力，纯自主实现的 Go 内存管理库；能够应对各种场景下大小内存的 分配/释放/管理 等工作，能够帮助适用于任何复杂数据结构的构建（链表/数组/树/hash 等场景），能够良好完美的逃逸掉 Go 内置的 GC 机制，保证程序的超高性能，是构建高性能程序基础设施。
+XMM is a third-party memory management library implemented in the Go language environment, which does not rely on any memory management capabilities of Go itself, and is a purely independent Go memory management library; it can handle the allocation/release/management of large and small memory in various scenarios, and can help with the construction of any complex data structures (chains/arrays/trees/hashes, etc.), and can escape Go's built-in GC mechanism well and perfectly to ensure the ultra-high performance of programs, which is the infrastructure for building high-performance programs.
+
 
 <br />
 
-### XMM 主要具备以下特点
+### XMM Key Features
 
-1. XMM 是一个在 Go 语言环境中完全自主实现的第三方内存管理库，不依赖于 Go 本身的任何内存管理能力，通过 6000 行纯 Go 代码自主实现的 Go 内存管理库，适合不用 Go 的 GC 想要自己管理内存的场景。
+1. XMM is a third-party memory management library implemented in the Go language environment, which does not rely on any memory management capabilities of Go itself, and is implemented in 6000 lines of pure Go code.
 
-2. XMM 能够应对各种场景下大小内存的 分配/释放/管理 等工作，能够帮助适用于任何复杂数据结构的构建，比如链表/数组/树/哈希表等等场景；XMM 可以让你像 C/C++ 一样方便便捷使用系统内存，并且不用担心性能问题。
+2. XMM can handle the allocation/release/management of memory in various scenarios, and can help build complex data structures such as chained tables/arrays/trees/hash tables, etc. XMM allows you to use system memory as easily and conveniently as C/C++, without worrying about performance.
 
-3. XMM 能够良好完美的逃逸掉 Go 内置的 GC 机制，保证程序的超高性能，是构建高性能程序基础设施；但与 sync.Pool 等实现机制完全不同，sync.Pool 等使用字节流实现来逃逸 GC，XMM 是纯使用 Linux 系统的 mmap 作为底层内存存储，XMM 更像 TcMalloc 等内存分配器。
+XMM is a good and perfect way to escape Go's built-in GC mechanism to ensure high performance and is the infrastructure for building high performance programs; however, unlike sync. XMM is more like a memory allocator such as TcMalloc. 4.
 
-4. XMM 协程安全，且分配性能超高，目前在普通 Linux 服务器上面可以达到 350w alloc/s，就是每秒可以进行 350 万次的内存分配操作不卡顿，非常适合想要自主管理内存且超高性能场景。
+4. XMM is process-safe and has very high allocation performance, currently reaching 350w alloc/s on a normal Linux server, which means that it can perform 3.5 million memory allocation operations per second without lagging, making it ideal for scenarios where you want to manage memory autonomously and with high performance.
 
-5. XMM 内存库使用接口简单，兼容性强，能够兼容 Go 1.8 以上版本，容易上手（推荐 go 1.12+ 版本更好），可以在 XMM 之上重构你所有想要的高性能数据结构，比如 map/slice 等等。（案例部分可以做一些数据结构实现的参考）
-
-<br />
-<br />
-
-## 为什么要设计 XMM？
-
-<br />
-
-### 为什么要设计自主的内存管理器？
-
-为了应对在多种内存管理的场景下的使用，可能需要有一些除了内置数据结构外的一些内存自主调度使用的场景，比如构建复杂的高性能的数据结构，在大规模内存占用，或者是非常多的小内存块占用场景下，能够尽量减少 Go 的 GC 机制，保障服务性能稳定不会因为 GC 而产生抖动。
-
-<br />
-
-
-### 为什么不使用内置的 map/slice 等数据结构？
-
-Golang 本身为了性能和内存可控，整个内存管理是完全封闭不对外的，并且有自主的 GC 机制，需要自主内存管理比较麻烦；Go 中自带的 GC 机制经过很多个版本的迭代，到目前性能已经很不错，但是在大规模的碎片化内存块下面，GC 还是会有一定损耗，在极端高性能场景下，GC 会让整个后台应用服务性能上不去（或偶尔卡顿）。所以一句话，Go 本身指针等还有性能会受到 GC 的影响，导致服务性能总是上不去。
-<br />
-
-### 为什么不使用其他开源的内存池？
-
-1. 除 Go 本身的内存模块，调研了解现有大部分的第三方 对象池/内存池/字节池 等需要某块自主内存操作的场景中基本是 Map/sync.Pool/Bytes[] 等方式。
-
-2. Map 数据结构适合保存各类型数据，但 GC 概率大； sync.Pool 这类保存复用临时对象，也可以各种数据机构，可适当减少 GC（无法避免 GC）； Bytes[] 方式来保存字节数据，并且只能保存字节数据，通过某些处理，尽量逃避 GC 扫描；（对比参考 [Go 语言基于 channel 实现的并发安全的字节池](https://zhuanlan.zhihu.com/p/265790840) ）
-
-3. 现有开源库包括：依赖于 sync.Pool 的比如字节的 mcache [gopkg/mcache.go](https://github.com/bytedance/gopkg/blob/main/lang/mcache/mcache.go)；采用 Bytes[] 方式的比如 MinIO 的的 [bpool minio/bpool.go](https://github.com/minio/minio/blob/master/internal/bpool/bpool.go) ，都可以学习参考。
-
-4. 结论：XMM 与他们实现机制完全不同，XMM 更靠近 Go 内置内存分配机制原理
-
-<br />
-
-### XMM 的最终设计结论是什么？
-
-为了完全实现最终为了逃逸掉 Golang 的 GC 机制，以及拥有完全自主可控的内存管理分配操作，在面对成千上万的小对象场景中，不会因为 Go 本身 GC 机制带来任何的抖动，所以自主从零开始实现了 XMM 模块，达到在 Go 程序中调用 XMM 模块可以达到完美的自主内存 申请/释放/管理 的功能，并可以完美逃逸掉 Go 的 GC 机制。
-<br />
-<br />
-
-### XMM 设计的目标是什么？
-为了保证高性能，XMM 设计之初，就定下了三个核心目标：
-
-1. 单机（6 核心 KVM 或物理机）内存分配性能达到 350w+ alloc/s；（每秒内存分配速度）；
-
-2. 可以支持调用用户手工强制Free某个申请内存块，也可以支持XMM自身自动GC某些未手工Free的内存库；（自主实现GC功能）
-
-3. 不会内存泄露，并且内存管理不是粗糙的，而颗粒度细致的，完全尽量可媲美行业主流的内存管理分配器。
+The XMM memory library has a simple interface and is compatible with Go 1.8 and above, so it is easy to get started (go 1.12+ is recommended) and can be used to reconstruct all the high-performance data structures you want on top of XMM, such as map/slice and so on. (The examples section can be used as a reference for some data structure implementations)
 
 
 <br />
 <br />
 
-## XMM 快速使用入门
-
-### ☆ [XMM 使用案例](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-Usage.md) ☆
+## Why develop XMM?
 
 <br />
 
-说明：XMM 测试程序快速预览下载使用
+### Why design a third party memory manager?
 
-1. [XMM 使用 - 入门](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test00.go)
-2. [XMM 使用 - 结构体](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test01.go)
-3. [XMM 使用 - 链表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test02.go)
-4. [XMM 使用 - 哈希表](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test03.go)
+In order to cope with a variety of memory management scenarios, it may be necessary to have some scenarios where memory is used autonomously in addition to the built-in data structures, such as building complex high performance data structures, minimising Go's GC mechanism in the case of large memory footprint, or a very large number of small memory blocks, and ensuring stable service performance without jitter due to GC.
+
+<br />
+
+
+### Why not use Go's built-in data structures like map/slice?
+
+Golang itself, for the sake of performance and memory control, is completely closed to the public, and has its own GC mechanism, so it is more troublesome to manage memory independently; the GC mechanism that comes with Go has been iterated over many versions, and its performance is already very good so far, but in a large-scale fragmented memory block, GC will still have some loss, and in extreme high-performance scenarios, GC will In extreme high performance scenarios, GC can cause the entire background application service to underperform (or occasionally stall). So in a nutshell, Go itself is affected by GC in terms of performance of pointers and so on, which always leads to poor performance of the service.
+
+<br />
+
+### Why not use other open source memory pools?
+
+1. in addition to Go's own memory module, research understands that most of the existing third-party object pools/memory pools/byte pools and other scenarios that require a certain piece of autonomous memory operations are basically in the form of Map/sync.
+
+Pool is suitable for storing various types of data, but has a high probability of GC; sync.Pool is suitable for storing reused temporary objects, and can also be used for various data bodies, which can reduce GC appropriately (it cannot avoid GC); Bytes[] is suitable for storing byte data, and can only store byte data, which can avoid GC scanning as much as possible through certain processing; (compare with [Go language's byte pool based on channel-based implementation of concurrency-safe byte pooling](https://zhuanlan.zhihu.com/p/265790840))
+
+3. existing open source libraries include: mcache [gopkg/mcache.go](https://github.com/bytedance/gopkg/blob/main/lang/mcache/mcache.go), which relies on sync.Pool, for example, and [Bytes[]], which uses Bytes[] Pool [bpool minio/bpool.go](https://github.com/minio/minio/blob/master/internal/bpool/bpool.go), for example, and [bpool minio/bpool.go](https://github.com/minio/minio/blob/master/internal/bpool/bpool.go) for MinIO.
+
+4. Conclusion: XMM is completely different from their implementation mechanism, XMM is closer to Go's built-in memory allocation mechanism principle
+
+<br />
+
+### What is the final design conclusion of the XMM?
+
+The XMM module has been implemented from scratch in order to escape Golang's GC mechanism and to have a fully autonomous memory management operation, without any jitter caused by Go's own GC mechanism in the case of thousands of small objects.
+<br />
+<br />
+
+### What are the XMM design goals?
+To ensure high performance, the XMM was designed with three core objectives in mind.
+
+1. a single machine (6-core KVM or physical machine) memory allocation performance of 350w+ alloc/s; (memory allocation speed per second).
+
+2. support for calling the user to manually force a block of memory to be free, or support for XMM itself to automatically GC some memory banks that are not manually free; (autonomous implementation of GC function)
+
+3. no memory leaks, and memory management is not crude, but granular, fully comparable to the industry's mainstream memory management allocators.
+
+
+<br />
+<br />
+
+## XMM Quick Start
+
+### ☆ [XMM Use Case](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-Usage.md) ☆
+
+<br />
+
+Description: A quick preview of the XMM test program to download and use
+
+1. [Using XMM - Getting Started](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test00.go)
+2. [XMM Usage - Structs](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test01.go)
+3. [XMM Usage - Linked Tables](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test02.go)
+4. [XMM Usage - Hash Tables](https://github.com/heiyeluren/XMM/blob/main/example/xmm-test03.go)
 
 <br /> <br />
 
 
-## XMM 实现原理介绍
+## Introduction to the principle of XMM implementation
 
-1. [XMM 的核心设计与实现流程](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-DesignImplementation.md)
-1. [XMM 设计实现技术调研参考](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-InvestigateResearch.md)
+1. [Core Design and Implementation Process of XMM](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-DesignImplementation.md)
+1. [XMM design and implementation technology research reference](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-InvestigateResearch.md)
 
 
 <br /> <br />
 
-### XMM 技术交流
+### XMM Technology Exchange Community
 
-XMM 目前是 0.1 版本，总体性能比较好，目前也在另外一个自研的 XMap 模块中使用，当然也少不了一些问题和 bug，欢迎大家一起共创，或者直接提交 PR 等等。
+XMM is currently an early version, the overall performance is relatively good, and is also currently used in another self-developed XMap module, of course, there are also some problems and bugs, welcome everyone to create together, you can submit issues and PR, etc..
 
-欢迎加入 XMM 技术交流微信群，要加群，可以先添加如下微信让对方拉入群：
+You can also send emails to the author for communication, and if you are convenient to use WeChat, you can add the author's WeChat.
 
+<br />
+
+#### Author's email: heiyeluren@gmail.com / heiyeluren@qq.com
+#### Author's WeChat: (swipe to add)
+<br />
 <img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx.png width=40% />
 
 <br /><br />
-也可以直接扫描加入微信群（七天后失效）：
-<br />
-
-<img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx-group.png width=40% />
-
-
-
-<br />
 <br />
