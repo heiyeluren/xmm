@@ -1,4 +1,4 @@
-module github.com/heiyeluren/xmm
+module github.com/heiyeluren/XMM
 
 go 1.12
 
