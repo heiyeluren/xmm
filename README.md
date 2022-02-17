@@ -1,7 +1,7 @@
 
 <img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-logo02.png width=50% />
 
-## ➤ [XMM English Introduction Document](https://github.com/heiyeluren/XMM/blob/v.0.2.0/docs/XMM-INTRO-EN.md)
+## ➤ [XMM English Introduction Document](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-INTRO-EN.md)
 
 
 <br />
