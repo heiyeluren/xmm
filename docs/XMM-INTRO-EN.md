@@ -40,7 +40,7 @@ XMM is a third-party memory management library implemented in the Go language en
 
 2. XMM can handle the allocation/release/management of memory in various scenarios, and can help build complex data structures such as chained tables/arrays/trees/hash tables, etc. XMM allows you to use system memory as easily and conveniently as C/C++, without worrying about performance.
 
-XMM is a good and perfect way to escape Go's built-in GC mechanism to ensure high performance and is the infrastructure for building high performance programs; however, unlike sync. XMM is more like a memory allocator such as TcMalloc. 4.
+3. XMM is a good and perfect way to escape Go's built-in GC mechanism to ensure high performance and is the infrastructure for building high performance programs; however, unlike sync. XMM is more like a memory allocator such as TcMalloc. 4.
 
 4. XMM is process-safe and has very high allocation performance, currently reaching 350w alloc/s on a normal Linux server, which means that it can perform 3.5 million memory allocation operations per second without lagging, making it ideal for scenarios where you want to manage memory autonomously and with high performance.
 
