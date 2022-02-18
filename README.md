@@ -147,12 +147,6 @@ XMM 目前是早期版本，总体性能比较好，目前也在另外一个自�
 
 <img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx.png width=40% />
 
-<br /><br />
-也可以直接扫描加入微信群（七天后失效）：
-<br />
-
-<img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-wx-group.png width=40% />
-
 
 
 <br />
