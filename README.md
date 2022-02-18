@@ -1,5 +1,11 @@
 
 <img src=https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/xmm-logo02.png width=50% />
+<p>
+<a href="https://sourcegraph.com/github.com/heiyeluren/XMM?badge"><img src="https://sourcegraph.com/github.com/heiyeluren/XMM/-/badge.svg" alt="GoDoc"></a>
+<a href="https://pkg.go.dev/github.com/heiyeluren/XMM"><img src="https://pkg.go.dev/badge/github.com/heiyeluren/XMM" alt="GoDoc"></a>
+<a href="https://goreportcard.com/report/github.com/heiyeluren/XMM"><img src="https://goreportcard.com/badge/github.com/heiyeluren/XMM" alt="Go Report Card" /a>
+</p>
+
 
 ## ➤ [XMM English Introduction Document](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-INTRO-EN.md)
 
