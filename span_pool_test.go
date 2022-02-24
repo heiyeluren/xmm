@@ -86,6 +86,34 @@ func TestSpanLock(t *testing.T) {
 	}
 }
 
+func Test_SanPool_Alloc(t *testing.T) {
+	f := &Factory{}
+	mm, err := f.CreateMemory(0.6)
+	if err != nil {
+		panic(err)
+	}
+	key, val := "key", "val"
+	uSize := unsafe.Sizeof(User{})
+	t1 := time.Now()
+	us := make([]*User, 1000000)
+
+	for i := 0; i < 1000000; i++ {
+		entryPtr, err := mm.Alloc(uSize)
+		if err != nil {
+			panic(err)
+		}
+		user := (*User)(entryPtr)
+		f1(user, key, val)
+		us[i] = user
+	}
+	fmt.Println(time.Now().Sub(t1), len(us))
+	for _, u := range us {
+		if u.Addr != "key" {
+			panic(u)
+		}
+	}
+}
+
 func Test_SanPool_Find(t *testing.T) {
 	h, err := newXHeap()
 	if err != nil {
