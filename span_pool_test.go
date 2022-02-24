@@ -88,7 +88,7 @@ func TestSpanLock(t *testing.T) {
 
 func Test_SanPool_Alloc(t *testing.T) {
 	f := &Factory{}
-	mm, err := f.CreateConcurrentHashMapMemory(0.6, 1)
+	mm, err := f.CreateMemory(0.6)
 	if err != nil {
 		panic(err)
 	}

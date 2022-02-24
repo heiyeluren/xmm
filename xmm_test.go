@@ -404,7 +404,7 @@ func Test_NewUser(t *testing.T) {
 
 func Test_FromInAddr(t *testing.T) {
 	f := &Factory{}
-	mm, err := f.CreateConcurrentHashMapMemory(0.6, 1)
+	mm, err := f.CreateMemory(0.6)
 	if err != nil {
 		t.Fatal(err)
 	}
