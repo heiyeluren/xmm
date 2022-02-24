@@ -402,37 +402,6 @@ func Test_NewUser(t *testing.T) {
 	fmt.Println(time.Now().Sub(t1))
 }
 
-func Test_FromInAddr(t *testing.T) {
-	f := &Factory{}
-	mm, err := f.CreateConcurrentHashMapMemory(0.6, 1)
-	if err != nil {
-		t.Fatal(err)
-	}
-	key, val := "key", "val"
-	uSize := unsafe.Sizeof(User{})
-	t1 := time.Now()
-	for i := 0; i < 10000000; i++ {
-		entryPtr, err := mm.Alloc(uSize + uintptr(len(key)) + uintptr(len(val)))
-		if err != nil {
-			t.Fatal(err)
-		}
-		_ = (*User)(entryPtr)
-		/*
-			keyValPtrs, err := mm.FromInAddr(uintptr(entryPtr)+uSize, key, val)
-			if err != nil {
-				t.Fatal(err)
-			}
-			user.Addr = *(keyValPtrs[0])
-			user.Desc = *(keyValPtrs[1])
-		*/
-		/*
-			user.Addr = key
-			user.Desc = val
-		*/
-	}
-	fmt.Println(time.Now().Sub(t1))
-}
-
 func TestMm_Alloc(t *testing.T) {
 	f := &Factory{}
 	mm, err := f.CreateMemory(0.6)

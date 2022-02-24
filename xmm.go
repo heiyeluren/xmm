@@ -142,6 +142,7 @@ type Factory struct {
 	sp *xSpanPool
 }
 
+// CreateMemory spanFact为负载因子，当span内存超过这个百分比阈值，就会扩容
 func (s *Factory) CreateMemory(spanFact float32) (XMemory, error) {
 	if spanFact <= 0 {
 		return nil, NilError
@@ -156,24 +157,6 @@ func (s *Factory) CreateMemory(spanFact float32) (XMemory, error) {
 	}
 	s.sp = sp
 	sa := newXStringAllocator(sp)
-	return &mm{sp: sp, sa: sa, h: h}, nil
-}
-
-//NewXConcurrentHashMapSpanPool
-func (s *Factory) CreateConcurrentHashMapMemory(spanFact float32, pageNumCoefficient uint8) (XMemory, error) {
-	if spanFact <= 0 {
-		return nil, NilError
-	}
-	h, err := newXHeap()
-	if err != nil {
-		return nil, err
-	}
-	sp, err := newXConcurrentHashMapSpanPool(h, spanFact, pageNumCoefficient)
-	if err != nil {
-		return nil, err
-	}
-	sa := newXStringAllocator(sp)
-	s.sp = sp
 	return &mm{sp: sp, sa: sa, h: h}, nil
 }
 

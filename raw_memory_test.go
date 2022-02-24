@@ -84,8 +84,8 @@ func Test_Syscall6(t *testing.T) {
 }
 
 func Test_LineAlloc(t *testing.T) {
-	userSize, num := unsafe.Sizeof(User{}), 1000000000
-	fmt.Println(heapRawMemoryBytes*8, unsafe.Sizeof(User{})*1000000000)
+	userSize, num := unsafe.Sizeof(User{}), 10000
+	fmt.Println(heapRawMemoryBytes*8, unsafe.Sizeof(User{})*uintptr(num))
 	size := int(round(uintptr(heapRawMemoryBytes*8), 4096))
 	addr := uintptr(sysReserve(size)) // 必须预留的多才可以   	arena linearAlloc学习这个
 	prot, flags, fd, offset, length := syscall.PROT_READ|syscall.PROT_WRITE, syscall.MAP_ANON|syscall.MAP_FIXED|syscall.MAP_PRIVATE, -1, 0, size
