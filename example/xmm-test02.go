@@ -25,7 +25,7 @@ type XListNode struct {
 }
 
 //单链表主结构
-/ Single linked table main structure
+// Single linked table main structure
 type XList struct {
 	Head *XListNode
 	//Tail *XListNode
