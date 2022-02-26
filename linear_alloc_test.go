@@ -24,7 +24,6 @@ import (
 	"testing"
 	"time"
 	"unsafe"
-	//"xmm/src"
 )
 
 func TestLinearAlloc(t *testing.T) {
@@ -44,7 +43,7 @@ func TestLinearAlloc(t *testing.T) {
 		user := (*User)(unsafe.Pointer(ret))
 		user.Age = 11
 		user.Name = n
-		//addr += uintptr(length)
+		// addr += uintptr(length)
 		us[n] = ret
 		ret += userSize
 	}
@@ -102,8 +101,8 @@ func TestLinearAlloc3(t *testing.T) {
 	fmt.Println(unsafe.Sizeof(NodeEntry{}), uintptr(p), round(uintptr(p), pageSize), unsafe.Offsetof(NodeEntry{}.Next))
 	fmt.Println(round(unsafe.Sizeof(NodeEntry{}), 8), round(unsafe.Sizeof(A{}), 8))
 
-	//todo 怀疑是这个内存没有对齐     -120 cache line 0.01s    -80 0.09s     -20 0.22s
-	//todo 对齐
+	// todo 怀疑是这个内存没有对齐     -120 cache line 0.01s    -80 0.09s     -20 0.22s
+	// todo 对齐
 	ptr := uintptr(p) + pageSize*101 - 1500
 	fmt.Println(ptr, ptr%8, round(ptr, pageSize), round(ptr+80, pageSize))
 	node := (*NodeEntry)(unsafe.Pointer(ptr))

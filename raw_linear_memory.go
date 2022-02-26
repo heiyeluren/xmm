@@ -19,7 +19,7 @@
 package xmm
 
 type xRawLinearMemory struct {
-	//bitmap    [heapArenaBitmapBytes]byte
+	// bitmap    [heapArenaBitmapBytes]byte
 	spans     [pagesPerRawMemory]*xSpan
 	pageInUse [pagesPerRawMemory / 8]uint8
 	pageMarks [pagesPerRawMemory / 8]uint8

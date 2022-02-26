@@ -51,7 +51,7 @@ func (sa *xStringAllocator) alloc(size uintptr) (sh *reflect.StringHeader, err e
 	return sh, nil
 }
 
-//todo  这里有bug，StringHeader没有计算进去，应该使用[]byte
+// todo  这里有bug，StringHeader没有计算进去，应该使用[]byte
 func (sa *xStringAllocator) FromInAddr(addr uintptr, contents ...string) (p []*string, err error) {
 	offset := addr
 	p = make([]*string, len(contents))
@@ -69,7 +69,7 @@ func (sa *xStringAllocator) FromInAddr(addr uintptr, contents ...string) (p []*s
 		source := reflect.SliceHeader{Data: sourcePtr.Data, Len: sourcePtr.Len, Cap: sourcePtr.Len}
 		srcByte := *(*[]byte)(unsafe.Pointer(&source))
 		if len := copy(dstBytes, srcByte); len != sh.Len {
-			return nil, fmt.Errorf("copy length is err: len = %d\n", len)
+			return nil, fmt.Errorf("copy length is err: len = %d", len)
 		}
 		p[i] = (*string)(unsafe.Pointer(sh))
 	}
@@ -89,7 +89,7 @@ func (sa *xStringAllocator) From2(item1 string, item2 string) (newItem1 string, 
 	dst := reflect.SliceHeader{Data: uintptr(dataPtr), Len: rawSize, Cap: rawSize}
 	dstBytes := *(*[]byte)(unsafe.Pointer(&dst))
 	if len := copy(dstBytes, raw); len != rawSize {
-		return "", "", fmt.Errorf("copy length is err: len = %d\n", len)
+		return "", "", fmt.Errorf("copy length is err: len = %d", len)
 	}
 	dst.Len = item1Size
 	str1 := *(*string)(unsafe.Pointer(&dst))
@@ -109,14 +109,12 @@ func (sa *xStringAllocator) From(content string) (p string, err error) {
 	dst := reflect.SliceHeader{Data: uintptr(dataPtr), Len: length, Cap: length}
 	dstBytes := *(*[]byte)(unsafe.Pointer(&dst))
 	if len := copy(dstBytes, content); len != length {
-		return "", fmt.Errorf("copy length is err: len = %d\n", len)
+		return "", fmt.Errorf("copy length is err: len = %d", len)
 	}
 	return *(*string)(unsafe.Pointer(&dst)), err
 }
 
-
-func (sa *xStringAllocator) FreeString(content string)error{
+func (sa *xStringAllocator) FreeString(content string) error {
 	sh := (*reflect.StringHeader)(unsafe.Pointer(&content))
 	return sa.sp.Free(sh.Data)
 }
-

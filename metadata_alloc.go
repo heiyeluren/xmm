@@ -32,21 +32,21 @@ const metadataRawMemoryBytes = 256 << 20
 // 申请固定大小申请
 type xFixedAllocator struct {
 
-	//固定的
+	// 固定的
 	size uintptr
 
 	addr uintptr
 
-	//所有mmap的内存
+	// 所有mmap的内存
 	free *mRawlink
 
-	//使用的
+	// 使用的
 	chunk uintptr
 
-	//未用的
+	// 未用的
 	nchunk uintptr
 
-	//mmap的内存
+	// mmap的内存
 	freeRawMemory *xRawMemory
 
 	growCall func(inuse uintptr)
@@ -105,7 +105,7 @@ func (xa *xFixedAllocator) grow() error {
 }
 
 func (xa *xFixedAllocator) casNchunk() (old uintptr) {
-	size := xa.size //不变的size
+	size := xa.size // 不变的size
 	var swapped bool
 	for /*retry := 3; retry > 0; retry--*/ {
 		oldVal := atomic.LoadUintptr(&xa.nchunk)
@@ -118,7 +118,7 @@ func (xa *xFixedAllocator) casNchunk() (old uintptr) {
 }
 
 func (xa *xFixedAllocator) casChunk() (old uintptr) {
-	size := xa.size //不变的size
+	size := xa.size // 不变的size
 	var swapped bool
 	for /*retry := 3; retry > 0; retry--*/ {
 		oldVal := atomic.LoadUintptr(&xa.chunk)

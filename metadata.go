@@ -26,18 +26,18 @@ const (
 	_FixAllocChunk = 16 << 10 // Chunk size for FixAlloc
 
 	RawMemoryL1Bits = 0
-	//堆中地址占48位
+	// 堆中地址占48位
 	heapAddrBits = 48
-	//每个RawMemory的1<<32,占28bit
+	// 每个RawMemory的1<<32,占28bit
 	logHeapRawMemoryBytes = 28
 
-	//page大小 4K
+	// page大小 4K
 	_PageSize = 1 << _PageShift
 
-	//每个RawMemory的大小256M
+	// 每个RawMemory的大小256M
 	heapRawMemoryBytes = 1 << logHeapRawMemoryBytes
 
-	//每个RawMemory的page数 65536
+	// 每个RawMemory的page数 65536
 	pagesPerRawMemory = heapRawMemoryBytes / _PageSize
 
 	// 48bit = L1Bits + L2Bits + 堆中byte偏移量
@@ -58,7 +58,7 @@ const (
 )
 
 const (
-	_MaxSmallSize   = 32768 //4K
+	_MaxSmallSize   = 32768 // 4K
 	smallSizeDiv    = 8
 	smallSizeMax    = 1024
 	largeSizeDiv    = 128

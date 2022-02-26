@@ -24,14 +24,13 @@ import (
 
 type xClassSpan struct {
 
-	//lock sync.Mutex
-
+	// lock sync.Mutex
 	classIndex uint // class的索引
 
-	//空的，
+	// 空的，
 	free *mSpanList
 
-	//满的span。
+	// 满的span。
 	full *mSpanList
 
 	// nmalloc is the cumulative count of objects allocated from
@@ -42,6 +41,7 @@ type xClassSpan struct {
 	heap *xHeap
 }
 
+// Init initializes
 func (x *xClassSpan) Init(classIndex uint, heap *xHeap) error {
 	if heap == nil {
 		return errors.New("heap is nil")
@@ -59,7 +59,7 @@ func (x *xClassSpan) allocSpan(index int, f float32) (*xSpan, error) {
 			return x.free.moveHead(), nil
 		}()
 		if span != nil && err == nil {
-			//log.Printf("xClassSpan class:%d  free申请 span:%d\n", x.classIndex, unsafe.Pointer(span))
+			// log.Printf("xClassSpan class:%d  free申请 span:%d\n", x.classIndex, unsafe.Pointer(span))
 			return span, nil
 		}
 	}
@@ -68,7 +68,7 @@ func (x *xClassSpan) allocSpan(index int, f float32) (*xSpan, error) {
 	size := class_to_size[index]
 	pageNum = uint8(Align(Align(uintptr(size), _PageSize)/uintptr(_PageSize), uintptr(pageNum)))
 	span, err := heap.allocSpan(uintptr(pageNum), uint(index), uintptr(size), f)
-	//log.Printf("xClassSpan heap.allocSpan class:%d  free申请 span:%d\n", x.classIndex, unsafe.Pointer(span))
+	// log.Printf("xClassSpan heap.allocSpan class:%d  free申请 span:%d\n", x.classIndex, unsafe.Pointer(span))
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (x *xClassSpan) freeSpan(span *xSpan) (swap bool, size uint, err error) {
 	needFree := false
 	err = func() error {
 		gcCount := span.countGcMarkBits()
-		//没有达到gc阈值或者当前span正在被分配不做GC（异步gc该类span）
+		// 没有达到gc阈值或者当前span正在被分配不做GC（异步gc该类span）
 		if gcCount <= uintptr(float64(span.nelems)*SpanGCFactor) {
 			return nil
 		}
@@ -104,7 +104,7 @@ func (x *xClassSpan) freeSpan(span *xSpan) (swap bool, size uint, err error) {
 		allocCount := span.allocCount
 		gcCount = span.countGcMarkBits()
 		x.heap.addFreeCapacity(-int64(allocCount))
-		//没有达到gc阈值或者当前span正在被分配不做GC（异步gc该类span）
+		// 没有达到gc阈值或者当前span正在被分配不做GC（异步gc该类span）
 		if gcCount < uintptr(float64(span.nelems)*SpanGCFactor) {
 			return nil
 		}
@@ -115,14 +115,14 @@ func (x *xClassSpan) freeSpan(span *xSpan) (swap bool, size uint, err error) {
 		needFree = true
 		span.freeIndex = 0
 		span.allocCount = span.nelems - gcCount
-		//span.gcmarkBits.show64(span.nelems)
+		// span.gcmarkBits.show64(span.nelems)
 		span.allocBits = span.gcmarkBits
 		span.gcmarkBits, err = newMarkBits(span.nelems, true)
 		if err != nil {
 			return err
 		}
 		span.refillAllocCache(0)
-		//log.Printf("refillAllocCache allocCache:%.64b gcCount:%d allocCount:%d gcCount:%d oldallocCount:%d\n", span.allocCache, gcCount, span.allocCount, gcCount, allocCount)
+		// log.Printf("refillAllocCache allocCache:%.64b gcCount:%d allocCount:%d gcCount:%d oldallocCount:%d\n", span.allocCache, gcCount, span.allocCount, gcCount, allocCount)
 		return nil
 	}()
 	if err != nil {
@@ -131,8 +131,8 @@ func (x *xClassSpan) freeSpan(span *xSpan) (swap bool, size uint, err error) {
 	if !needFree {
 		return false, 0, nil
 	}
-	//判断当前span是否不在使用，不在使用存放进去。在使用则
-	//log.Printf("xClassSpan class:%d 回收 span:%d\n", x.classIndex, unsafe.Pointer(span))
+	// 判断当前span是否不在使用，不在使用存放进去。在使用则
+	// log.Printf("xClassSpan class:%d 回收 span:%d\n", x.classIndex, unsafe.Pointer(span))
 	x.free.insert(span)
 	return true, size, nil
 }

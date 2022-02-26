@@ -48,7 +48,7 @@ func TestSpanList(t *testing.T) {
 		if i != waitCnt {
 			t.Fatal(u, "的数目不对 cnt:", i)
 		}
-		//fmt.Println(u, i)
+		// fmt.Println(u, i)
 	}
 	if cnt != waitCnt*loopCnt {
 		t.Fatal("总数不对")

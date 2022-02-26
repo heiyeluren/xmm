@@ -49,18 +49,18 @@ func TestSet(t *testing.T) {
 
 func Test_Syscall6(t *testing.T) {
 	/*arenaSizes := []uintptr{
-		512 << 20,
-		256 << 20,
-		128 << 20,
-	}
-	for _, arenaSize := range arenaSizes {
-		a, size := sysReserveAligned(unsafe.Pointer(p), arenaSize, heapArenaBytes)
-		if a != nil {
-			mheap_.arena.init(uintptr(a), size)
-			p = uintptr(a) + size // For hint below
-			break
-		}
-	}*/
+	  	512 << 20,
+	  	256 << 20,
+	  	128 << 20,
+	  }
+	  for _, arenaSize := range arenaSizes {
+	  	a, size := sysReserveAligned(unsafe.Pointer(p), arenaSize, heapArenaBytes)
+	  	if a != nil {
+	  		mheap_.arena.init(uintptr(a), size)
+	  		p = uintptr(a) + size // For hint below
+	  		break
+	  	}
+	  }*/
 	size := int(round(23232, 4096))
 	addr := uintptr(sysReserve(size)) // 必须预留的多才可以   	arena linearAlloc学习这个
 	for i := 0; i < 8; i++ {
@@ -74,7 +74,7 @@ func Test_Syscall6(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		//fmt.Println(ret, err)
+		// fmt.Println(ret, err)
 		user := (*User)(unsafe.Pointer(ret))
 		user.Age = 11
 		user.Name = 13
@@ -102,9 +102,9 @@ func Test_LineAlloc(t *testing.T) {
 		user := (*User)(unsafe.Pointer(ret))
 		user.Age = 11
 		user.Name = 13
-		//addr += uintptr(length)
+		// addr += uintptr(length)
 		ret += userSize
-		//fmt.Printf("user:%+v addr:%d\n", (*User)(unsafe.Pointer(ret)), ret)
+		// fmt.Printf("user:%+v addr:%d\n", (*User)(unsafe.Pointer(ret)), ret)
 	}
 }
 
@@ -133,9 +133,9 @@ func Test_MMapAlloc(t *testing.T) {
 		user := (*User)(unsafe.Pointer(ret))
 		user.Age = 11
 		user.Name = 13
-		//addr += uintptr(length)
+		// addr += uintptr(length)
 		ret += userSize
-		//fmt.Printf("user:%+v addr:%d\n", (*User)(unsafe.Pointer(ret)), ret)
+		// fmt.Printf("user:%+v addr:%d\n", (*User)(unsafe.Pointer(ret)), ret)
 	}
 }
 

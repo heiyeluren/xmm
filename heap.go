@@ -36,8 +36,8 @@ type xHeap struct {
 
 	rawLinearMemoryAlloc linearAlloc
 
-	//默认RawMemoryL1Bits=0,退化为以为数据。RawMemoryL2Bits = 20个
-	addrMap [1 << RawMemoryL1Bits]*[1 << RawMemoryL2Bits]*xRawLinearMemory //addr -> page -> rawMemory 关系
+	// 默认RawMemoryL1Bits=0,退化为以为数据。RawMemoryL2Bits = 20个
+	addrMap [1 << RawMemoryL1Bits]*[1 << RawMemoryL2Bits]*xRawLinearMemory // addr -> page -> rawMemory 关系
 
 	allChunk []*xChunk
 
@@ -110,7 +110,7 @@ func (xh *xHeap) addFreeCapacity(size int64) {
 func (xh *xHeap) addChunks(xChunks []*xChunk) error {
 	if xh.allChunk == nil || len(xChunks)+len(xh.allChunk) > cap(xh.allChunk) {
 		cap := cap(xh.allChunk) << 1
-		//log.Printf("xHeap.addChunks grow cap:%d\n", cap)
+		// log.Printf("xHeap.addChunks grow cap:%d\n", cap)
 		err := xh.allChunkAllocator.grow(uintptr(cap), func(newPtr unsafe.Pointer) error {
 			sl := reflect.SliceHeader{
 				Data: uintptr(newPtr),
@@ -256,13 +256,13 @@ func (xh *xHeap) freeChunk(pageNum uintptr) (ptr *xChunk, err error) {
 	return &xChunk{startAddr: startAddr, npages: pageNum}, nil
 }
 
-//todo 释放：地址中保存len、保存空闲地址、要么直接复用，要么合并page再复用
+// todo 释放：地址中保存len、保存空闲地址、要么直接复用，要么合并page再复用
 func (xh *xHeap) free(addr uintptr) error {
-	//todo 标记完成，接下来触发清理
-	//panic("todo 释放：地址中保存len、保存空闲地址、要么直接复用，要么合并page再复用,存放到树状结构")
-	//todo 还给 span，比较高效。
-	//key:开始地址  value:结束地址   存放到红黑树中。
-	//key找key最相近的，找到判断value。有则更新，没有则插入。
+	// todo 标记完成，接下来触发清理
+	// panic("todo 释放：地址中保存len、保存空闲地址、要么直接复用，要么合并page再复用,存放到树状结构")
+	// todo 还给 span，比较高效。
+	// key:开始地址  value:结束地址   存放到红黑树中。
+	// key找key最相近的，找到判断value。有则更新，没有则插入。
 	if err := xh.mark(addr); err != nil {
 		return err
 	}
@@ -281,7 +281,7 @@ func (xh *xHeap) needSweep() bool {
 	}
 	sweepCtl := atomic.LoadInt32(&xh.sweepCtl)
 	if sweepCtl < 0 {
-		//扩容线程+1
+		// 扩容线程+1
 		if atomic.CompareAndSwapInt32(&xh.sweepCtl, sweepCtl, sweepCtl+1) {
 			return true
 		}
@@ -299,7 +299,7 @@ var logg bool
 
 // todo classSpan中并发支持
 func (xh *xHeap) sweep() {
-	//统计判断
+	// 统计判断
 	if !xh.needSweep() {
 		return
 	}
@@ -310,7 +310,7 @@ func (xh *xHeap) sweep() {
 			continue
 		}
 		classSpan := xh.classSpan[sweepIndex]
-		//todo 环循环
+		// todo 环循环
 		for span := classSpan.full.first; span != nil; span = span.next {
 			if logg {
 				fmt.Println("sweep", sweepIndex, uintptr(unsafe.Pointer(span)))
@@ -329,7 +329,7 @@ func (xh *xHeap) sweep() {
 	if total < 1 {
 		return
 	}
-	//logg = true
+	// logg = true
 	xh.addFreeCapacity(0 - int64(total))
 	for {
 		sweepCtl := atomic.LoadInt32(&xh.sweepCtl)
@@ -340,7 +340,7 @@ func (xh *xHeap) sweep() {
 			if sweepCtl != sweepCtlStatus {
 				return
 			}
-			//sweep执行结束
+			// sweep执行结束
 			atomic.StoreInt32(&xh.sweepCtl, 0)
 			atomic.StoreUint32(&xh.sweepIndex, 0)
 			return
@@ -355,12 +355,12 @@ func (xh *xHeap) ChunkInsert(chunk *xChunk) error {
 
 // 清理span（span级别锁）
 func (xh *xHeap) sweepFullSpan(span *xSpan) (sweep bool, size uint, err error) {
-	//fmt.Println("======================")
+	// fmt.Println("======================")
 	if span.classIndex > 0 {
 		// 所有还给classspan
 		return xh.classSpan[span.classIndex].freeSpan(span)
 	} else if span.classIndex == 0 && span.nelems > 0 {
-		//大对象释放
+		// 大对象释放
 		span.lock.Lock()
 		defer span.lock.Unlock()
 		if span.nelems != span.countGcMarkBits() {
@@ -424,12 +424,12 @@ func (xh *xHeap) grow2(pageNum uintptr) error {
 	}
 	offset := uintptr(p)
 	for i := 0; i < int(Align(size, heapRawMemoryBytes)/heapRawMemoryBytes); i++ {
-		//页地址到RawMemory保存
+		// 页地址到RawMemory保存
 		rawLinearMemoryPtr, err := xh.rawLinearMemoryAllocator.alloc()
 		if err != nil {
 			return err
 		}
-		//addrMap 初始化xRawLinearMemory
+		// addrMap 初始化xRawLinearMemory
 		rlm := (*xRawLinearMemory)(rawLinearMemoryPtr)
 		index := RawMemoryIndex(offset)
 		if addrs := xh.addrMap[index.l1()]; addrs == nil {
@@ -469,7 +469,7 @@ func (xh *xHeap) grow() error {
 	if err := xh.addChunks([]*xChunk{chunk}); err != nil {
 		return err
 	}
-	//页地址到RawMemory保存
+	// 页地址到RawMemory保存
 	rawLinearMemoryPtr, err := xh.rawLinearMemoryAllocator.alloc()
 	if err != nil {
 		return err
@@ -489,6 +489,7 @@ func (xh *xHeap) grow() error {
 	return nil
 }
 
+// RawMemoryIndex .
 func RawMemoryIndex(p uintptr) RawMemoryIdx {
 	return RawMemoryIdx((p + RawMemoryBaseOffset) / heapRawMemoryBytes)
 }
@@ -499,6 +500,7 @@ func RawMemoryBase(i RawMemoryIdx) uintptr {
 	return uintptr(i)*heapRawMemoryBytes - RawMemoryBaseOffset
 }
 
+// RawMemoryIdx .
 type RawMemoryIdx uint
 
 func (i RawMemoryIdx) l1() uint {
@@ -506,15 +508,13 @@ func (i RawMemoryIdx) l1() uint {
 		// Let the compiler optimize this away if there's no
 		// L1 map.
 		return 0
-	} else {
-		return uint(i) >> RawMemoryL1Shift
 	}
+	return uint(i) >> RawMemoryL1Shift
 }
 
 func (i RawMemoryIdx) l2() uint {
 	if RawMemoryL1Bits == 0 {
 		return uint(i)
-	} else {
-		return uint(i) & (1<<RawMemoryL2Bits - 1)
 	}
+	return uint(i) & (1<<RawMemoryL2Bits - 1)
 }

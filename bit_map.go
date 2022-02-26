@@ -152,14 +152,14 @@ func (m markBits) setMarked() {
 	// Might be racing with other updates, so use atomic update always.
 	// We used to be clever here and use a non-atomic update in certain
 	// cases, but it's not worth the risk.
-	//atomic.Or32(m.uint32p, m.mask)
+	// atomic.Or32(m.uint32p, m.mask)
 	for {
 		val := atomic.LoadUint32(m.uint32p)
 		if atomic.CompareAndSwapUint32(m.uint32p, val, val^m.mask) {
 			return
 		}
 	}
-	//atomic.StoreUint32(m.uint32p, *m.uint32p^m.mask)
+	// atomic.StoreUint32(m.uint32p, *m.uint32p^m.mask)
 }
 
 // setMarkedNonAtomic sets the marked bit in the markbits, non-atomically.
@@ -172,14 +172,14 @@ func (m markBits) clearMarked() {
 	// Might be racing with other updates, so use atomic update always.
 	// We used to be clever here and use a non-atomic update in certain
 	// cases, but it's not worth the risk.
-	//atomic.And32(m.uint32p, ^m.mask)
+	// atomic.And32(m.uint32p, ^m.mask)
 	for {
 		val := atomic.LoadUint32(m.uint32p)
 		if atomic.CompareAndSwapUint32(m.uint32p, val, val&(^m.mask)) {
 			return
 		}
 	}
-	//atomic.StoreUint32(m.uint32p, *m.uint32p&(^m.mask))
+	// atomic.StoreUint32(m.uint32p, *m.uint32p&(^m.mask))
 }
 
 // markBitsForSpan returns the markBits for the span base address base.

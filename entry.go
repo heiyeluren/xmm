@@ -15,6 +15,7 @@ language governing permissions and limitations under the
 License.
 */
 
+// Package xmm
 // Package redblacktree provides a pure Golang implementation
 // of a red-black tree as described by Thomas H. Cormen's et al.
 // in their seminal Algorithms book (3rd ed). This data structure
@@ -43,9 +44,8 @@ type NodeEntry struct {
 	right  *NodeEntry
 	left   *NodeEntry
 	parent *NodeEntry
-	color  Color //比二叉查找树要多出一个颜色属性
+	color  Color // 比二叉查找树要多出一个颜色属性
 }
-
 
 type encodedNodeEntry struct {
 	TotalLen uint64
@@ -57,9 +57,9 @@ type encodedNodeEntry struct {
 	right  *NodeEntry
 	left   *NodeEntry
 	parent *NodeEntry
-	color  Color //比二叉查找树要多出一个颜色属性
+	color  Color // 比二叉查找树要多出一个颜色属性
 
-	//追加string  key、value 要不然就内存泄露了
+	// 追加string  key、value 要不然就内存泄露了
 
 }
 
@@ -81,6 +81,7 @@ func (n *NodeEntry) encode() []byte {
 
 }*/
 
+// BytesAscSort is a helper function for sorting a slice of byte slices
 var BytesAscSort Comparator = func(o1, o2 interface{}) int {
 	key1, key2 := o1.([]byte), o2.([]byte)
 	return bytes.Compare(key1, key2)
@@ -102,6 +103,7 @@ func (c Color) String() string {
 	}
 }
 
+// String returns string
 func (d Direction) String() string {
 	switch d {
 	case LEFT:
@@ -160,15 +162,16 @@ type Visitor interface {
 	Visit(*NodeEntry)
 }
 
-// A redblack tree is `Visitable` by a `Visitor`.
+// Visitable A redblack tree is `Visitable` by a `Visitor`.
 type Visitable interface {
 	Walk(Visitor)
 }
 
-// Keys must be comparable. It's mandatory to provide a Comparator,
+// Comparator Keys must be comparable. It's mandatory to provide a Comparator,
 // which returns zero if o1 == o2, -1 if o1 < o2, 1 if o1 > o2
 type Comparator func(o1, o2 interface{}) int
 
+// IntComparator inits a Comparator for ints
 // Default comparator expects keys to be of type `int`.
 // Warning: if either one of `o1` or `o2` cannot be asserted to `int`, it panics.
 func IntComparator(o1, o2 interface{}) int {
@@ -184,7 +187,7 @@ func IntComparator(o1, o2 interface{}) int {
 	}
 }
 
-// Keys of type `string`.
+// StringComparator Keys of type `string`.
 // Warning: if either one of `o1` or `o2` cannot be asserted to `string`, it panics.
 func StringComparator(o1, o2 interface{}) int {
 	s1 := o1.(string)
@@ -244,7 +247,7 @@ func (t *Tree) SetComparator(c Comparator) {
 // Return value in 1st position indicates whether any payload was found.
 func (t *Tree) Get(key []byte) (bool, []byte) {
 	if err := mustBeValidKey(key); err != nil {
-		//logger.Printf("Get was prematurely aborted: %s\n", err.Error())
+		// logger.Printf("Get was prematurely aborted: %s\n", err.Error())
 		return false, nil
 	}
 	ok, node := t.getNode(key)
@@ -292,7 +295,7 @@ func (t *Tree) getMinimum(x *NodeEntry) *NodeEntry {
 // GetParent looks for the node with supplied key and returns the parent node.
 func (t *Tree) GetParent(key interface{}) (found bool, parent *NodeEntry, dir Direction) {
 	if err := mustBeValidKey(key); err != nil {
-		//logger.Printf("GetParent was prematurely aborted: %s\n", err.Error())
+		// logger.Printf("GetParent was prematurely aborted: %s\n", err.Error())
 		return false, nil, NODIR
 	}
 
@@ -319,17 +322,17 @@ func (t *Tree) internalLookup(parent *NodeEntry, this *NodeEntry, key interface{
 	}
 }
 
-// Reverses actions of RotateLeft
+// RotateRight Reverses actions of RotateLeft
 func (t *Tree) RotateRight(y *NodeEntry) {
 	if y == nil {
-		//logger.Printf("RotateRight: nil arg cannot be rotated. Noop\n")
+		// logger.Printf("RotateRight: nil arg cannot be rotated. Noop\n")
 		return
 	}
 	if y.left == nil {
-		//logger.Printf("RotateRight: y has nil left subtree. Noop\n")
+		// logger.Printf("RotateRight: y has nil left subtree. Noop\n")
 		return
 	}
-	//logger.Printf("\t\t\trotate right of %s\n", y)
+	// logger.Printf("\t\t\trotate right of %s\n", y)
 	x := y.left
 	y.left = x.right
 	if x.right != nil {
@@ -349,17 +352,17 @@ func (t *Tree) RotateRight(y *NodeEntry) {
 	y.parent = x
 }
 
-// Side-effect: red-black tree properties is maintained.
+// RotateLeft Side-effect: red-black tree properties is maintained.
 func (t *Tree) RotateLeft(x *NodeEntry) {
 	if x == nil {
-		//logger.Printf("RotateLeft: nil arg cannot be rotated. Noop\n")
+		// logger.Printf("RotateLeft: nil arg cannot be rotated. Noop\n")
 		return
 	}
 	if x.right == nil {
-		//logger.Printf("RotateLeft: x has nil right subtree. Noop\n")
+		// logger.Printf("RotateLeft: x has nil right subtree. Noop\n")
 		return
 	}
-	//logger.Printf("\t\t\trotate left of %s\n", x)
+	// logger.Printf("\t\t\trotate left of %s\n", x)
 
 	y := x.right
 	x.right = y.left
@@ -387,7 +390,7 @@ func (t *Tree) Put(node *NodeEntry) error {
 	node.parent, node.left, node.Next, node.right = nil, nil, nil, nil
 	key, data := node.Key, node.Value
 	if err := mustBeValidKey(key); err != nil {
-		//logger.Printf("Put was prematurely aborted: %s\n", err.Error())
+		// logger.Printf("Put was prematurely aborted: %s\n", err.Error())
 		return err
 	}
 	t.lock.Lock()
@@ -395,17 +398,17 @@ func (t *Tree) Put(node *NodeEntry) error {
 	if t.root == nil {
 		node.color = BLACK
 		t.root = node
-		//logger.Printf("Added %s as root node\n", t.root.String())
+		// logger.Printf("Added %s as root node\n", t.root.String())
 		return nil
 	}
 
 	found, parent, dir := t.internalLookup(nil, t.root, key, NODIR)
 	if found {
 		if parent == nil {
-			//logger.Printf("Put: parent=nil & found. Overwrite ROOT node\n")
+			// logger.Printf("Put: parent=nil & found. Overwrite ROOT node\n")
 			t.root.Value = data
 		} else {
-			//logger.Printf("Put: parent!=nil & found. Overwriting\n")
+			// logger.Printf("Put: parent!=nil & found. Overwriting\n")
 			switch dir {
 			case LEFT:
 				parent.left.Value = data
@@ -424,7 +427,7 @@ func (t *Tree) Put(node *NodeEntry) error {
 			case RIGHT:
 				parent.right = newNode
 			}
-			//logger.Printf("Added %s to %s node of parent %s\n", newNode.String(), dir, parent.String())
+			// logger.Printf("Added %s to %s node of parent %s\n", newNode.String(), dir, parent.String())
 			t.fixupPut(newNode)
 		}
 	}
@@ -450,10 +453,10 @@ func isRed(n *NodeEntry) bool {
 //
 // @param z - the newly added Node to the tree.
 func (t *Tree) fixupPut(z *NodeEntry) {
-	//logger.Printf("\tfixup new node z %s\n", z.String())
+	// logger.Printf("\tfixup new node z %s\n", z.String())
 loop:
 	for {
-		//logger.Printf("\tcurrent z %s\n", z.String())
+		// logger.Printf("\tcurrent z %s\n", z.String())
 		switch {
 		case z.parent == nil:
 			fallthrough
@@ -461,18 +464,18 @@ loop:
 			fallthrough
 		default:
 			// When the loop terminates, it does so because p[z] is black.
-			//logger.Printf("\t\t=> bye\n")
+			// logger.Printf("\t\t=> bye\n")
 			break loop
 		case z.parent.color == RED:
 			grandparent := z.parent.parent
-			//logger.Printf("\t\tgrandparent is nil  %t addr:%d\n", grandparent == nil, unsafe.Pointer(t))
+			// logger.Printf("\t\tgrandparent is nil  %t addr:%d\n", grandparent == nil, unsafe.Pointer(t))
 			if z.parent == grandparent.left {
-				//logger.Printf("\t\t%s is the left child of %s\n", z.parent, grandparent)
+				// logger.Printf("\t\t%s is the left child of %s\n", z.parent, grandparent)
 				y := grandparent.right
-				////logger.Printf("\t\ty (right) %s\n", y)
+				// //logger.Printf("\t\ty (right) %s\n", y)
 				if isRed(y) {
 					// case 1 - y is RED
-					//logger.Printf("\t\t(*) case 1\n")
+					// logger.Printf("\t\t(*) case 1\n")
 					z.parent.color = BLACK
 					y.color = BLACK
 					grandparent.color = RED
@@ -481,40 +484,40 @@ loop:
 				} else {
 					if z == z.parent.right {
 						// case 2
-						//logger.Printf("\t\t(*) case 2\n")
+						// logger.Printf("\t\t(*) case 2\n")
 						z = z.parent
 						t.RotateLeft(z)
 					}
 
 					// case 3
-					//logger.Printf("\t\t(*) case 3\n")
+					// logger.Printf("\t\t(*) case 3\n")
 					z.parent.color = BLACK
 					grandparent.color = RED
 					t.RotateRight(grandparent)
 				}
 			} else {
-				//logger.Printf("\t\t%s is the right child of %s\n", z.parent, grandparent)
+				// logger.Printf("\t\t%s is the right child of %s\n", z.parent, grandparent)
 				y := grandparent.left
-				//logger.Printf("\t\ty (left) %s\n", y)
+				// logger.Printf("\t\ty (left) %s\n", y)
 				if isRed(y) {
 					// case 1 - y is RED
-					//logger.Printf("\t\t..(*) case 1\n")
+					// logger.Printf("\t\t..(*) case 1\n")
 					z.parent.color = BLACK
 					y.color = BLACK
 					grandparent.color = RED
 					z = grandparent
 
 				} else {
-					//logger.Printf("\t\t## %s\n", z.parent.left)
+					// logger.Printf("\t\t## %s\n", z.parent.left)
 					if z == z.parent.left {
 						// case 2
-						//logger.Printf("\t\t..(*) case 2\n")
+						// logger.Printf("\t\t..(*) case 2\n")
 						z = z.parent
 						t.RotateRight(z)
 					}
 
 					// case 3
-					//logger.Printf("\t\t..(*) case 3\n")
+					// logger.Printf("\t\t..(*) case 3\n")
 					z.parent.color = BLACK
 					grandparent.color = RED
 					t.RotateLeft(grandparent)
@@ -535,7 +538,7 @@ func (t *Tree) Size() uint64 {
 // Has checks for existence of a item identified by supplied key.
 func (t *Tree) Has(key interface{}) bool {
 	if err := mustBeValidKey(key); err != nil {
-		//logger.Printf("Has was prematurely aborted: %s\n", err.Error())
+		// logger.Printf("Has was prematurely aborted: %s\n", err.Error())
 		return false
 	}
 	found, _, _ := t.internalLookup(nil, t.root, key, NODIR)
@@ -559,7 +562,7 @@ func (t *Tree) transplant(u *NodeEntry, v *NodeEntry) {
 // Delete is a noop if the supplied key doesn't exist.
 func (t *Tree) Delete(key []byte) *NodeEntry {
 	if !t.Has(key) {
-		//logger.Printf("Delete: bail as no node exists for key %d\n", key)
+		// logger.Printf("Delete: bail as no node exists for key %d\n", key)
 		return nil
 	}
 	_, z := t.getNode(key)
@@ -569,26 +572,26 @@ func (t *Tree) Delete(key []byte) *NodeEntry {
 
 	if z.left == nil {
 		// one child (RIGHT)
-		//logger.Printf("\t\tDelete: case (a)\n")
+		// logger.Printf("\t\tDelete: case (a)\n")
 		x = z.right
-		//logger.Printf("\t\t\t--- x is right of z")
+		// logger.Printf("\t\t\t--- x is right of z")
 		t.transplant(z, z.right)
 
 	} else if z.right == nil {
 		// one child (LEFT)
-		//logger.Printf("\t\tDelete: case (b)\n")
+		// logger.Printf("\t\tDelete: case (b)\n")
 		x = z.left
-		//logger.Printf("\t\t\t--- x is left of z")
+		// logger.Printf("\t\t\t--- x is left of z")
 		t.transplant(z, z.left)
 
 	} else {
 		// two children
-		//logger.Printf("\t\tDelete: case (c) & (d)\n")
+		// logger.Printf("\t\tDelete: case (c) & (d)\n")
 		y = t.getMinimum(z.right)
-		//logger.Printf("\t\t\tminimum of z.right is %s (color=%s)\n", y, y.color)
+		// logger.Printf("\t\t\tminimum of z.right is %s (color=%s)\n", y, y.color)
 		yOriginalColor = y.color
 		x = y.right
-		//logger.Printf("\t\t\t--- x is right of minimum")
+		// logger.Printf("\t\t\t--- x is right of minimum")
 
 		if y.parent == z {
 			if x != nil {
@@ -611,7 +614,7 @@ func (t *Tree) Delete(key []byte) *NodeEntry {
 }
 
 func (t *Tree) fixupDelete(x *NodeEntry) {
-	//logger.Printf("\t\t\tfixupDelete of node %s\n", x)
+	// logger.Printf("\t\t\tfixupDelete of node %s\n", x)
 	if x == nil {
 		return
 	}
@@ -619,17 +622,17 @@ loop:
 	for {
 		switch {
 		case x == t.root:
-			//logger.Printf("\t\t\t=> bye .. is root\n")
+			// logger.Printf("\t\t\t=> bye .. is root\n")
 			break loop
 		case x.color == RED:
-			//logger.Printf("\t\t\t=> bye .. RED\n")
+			// logger.Printf("\t\t\t=> bye .. RED\n")
 			break loop
 		case x == x.parent.right:
-			//logger.Printf("\t\tBRANCH: x is right child of parent\n")
+			// logger.Printf("\t\tBRANCH: x is right child of parent\n")
 			w := x.parent.left // is nillable
 			if isRed(w) {
 				// Convert case 1 into case 2, 3, or 4
-				//logger.Printf("\t\t\tR> case 1\n")
+				// logger.Printf("\t\t\tR> case 1\n")
 				w.color = BLACK
 				x.parent.color = RED
 				t.RotateRight(x.parent)
@@ -639,13 +642,13 @@ loop:
 				switch {
 				case !isRed(w.left) && !isRed(w.right):
 					// case 2 - both children of w are BLACK
-					//logger.Printf("\t\t\tR> case 2\n")
+					// logger.Printf("\t\t\tR> case 2\n")
 					w.color = RED
 					x = x.parent // recurse up tree
 				case isRed(w.right) && !isRed(w.left):
 					// case 3 - right child RED & left child BLACK
 					// convert to case 4
-					//logger.Printf("\t\t\tR> case 3\n")
+					// logger.Printf("\t\t\tR> case 3\n")
 					w.right.color = BLACK
 					w.color = RED
 					t.RotateLeft(w)
@@ -653,7 +656,7 @@ loop:
 				}
 				if isRed(w.left) {
 					// case 4 - left child is RED
-					//logger.Printf("\t\t\tR> case 4\n")
+					// logger.Printf("\t\t\tR> case 4\n")
 					w.color = x.parent.color
 					x.parent.color = BLACK
 					w.left.color = BLACK
@@ -662,11 +665,11 @@ loop:
 				}
 			}
 		case x == x.parent.left:
-			//logger.Printf("\t\tBRANCH: x is left child of parent\n")
+			// logger.Printf("\t\tBRANCH: x is left child of parent\n")
 			w := x.parent.right // is nillable
 			if isRed(w) {
 				// Convert case 1 into case 2, 3, or 4
-				//logger.Printf("\t\t\tL> case 1\n")
+				// logger.Printf("\t\t\tL> case 1\n")
 				w.color = BLACK
 				x.parent.color = RED
 				t.RotateLeft(x.parent)
@@ -676,13 +679,13 @@ loop:
 				switch {
 				case !isRed(w.left) && !isRed(w.right):
 					// case 2 - both children of w are BLACK
-					//logger.Printf("\t\t\tL> case 2\n")
+					// logger.Printf("\t\t\tL> case 2\n")
 					w.color = RED
 					x = x.parent // recurse up tree
 				case isRed(w.left) && !isRed(w.right):
 					// case 3 - left child RED & right child BLACK
 					// convert to case 4
-					//logger.Printf("\t\t\tL> case 3\n")
+					// logger.Printf("\t\t\tL> case 3\n")
 					w.left.color = BLACK
 					w.color = RED
 					t.RotateRight(w)
@@ -690,7 +693,7 @@ loop:
 				}
 				if isRed(w.right) {
 					// case 4 - right child is RED
-					//logger.Printf("\t\t\tL> case 4\n")
+					// logger.Printf("\t\t\tL> case 4\n")
 					w.color = x.parent.color
 					x.parent.color = BLACK
 					w.right.color = BLACK
@@ -758,7 +761,7 @@ func (v *InorderVisitor) Visit(node *NodeEntry) {
 	v.buffer.Write([]byte("("))
 	v.Visit(node.left)
 	v.buffer.Write([]byte(fmt.Sprintf("%s", node.Key))) // @TODO
-	//v.buffer.Write([]byte(fmt.Sprintf("%d{%s}", node.Key, v.trim(node.color.String()))))
+	// v.buffer.Write([]byte(fmt.Sprintf("%d{%s}", node.Key, v.trim(node.color.String()))))
 	v.Visit(node.right)
 	v.buffer.Write([]byte(")"))
 }
@@ -790,19 +793,19 @@ func mustBeValidKey(key interface{}) error {
 	}
 
 	/*keyValue := reflect.ValueOf(key)
-	switch keyValue.Kind() {
-	case reflect.Chan:
-		fallthrough
-	case reflect.Func:
-		fallthrough
-	case reflect.Interface:
-		fallthrough
-	case reflect.Map:
-		fallthrough
-	case reflect.Ptr:
-		return ErrorKeyDisallowed
-	default:
-		return nil
-	}*/
+	  switch keyValue.Kind() {
+	  case reflect.Chan:
+	  	fallthrough
+	  case reflect.Func:
+	  	fallthrough
+	  case reflect.Interface:
+	  	fallthrough
+	  case reflect.Map:
+	  	fallthrough
+	  case reflect.Ptr:
+	  	return ErrorKeyDisallowed
+	  default:
+	  	return nil
+	  }*/
 	return nil
 }

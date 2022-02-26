@@ -41,11 +41,11 @@ type xSpanPool struct {
 	inuse                     [_NumSizeClasses]uint64
 	debug                     bool
 	spanGen                   [_NumSizeClasses]int32     // 小于0 正在扩容
-	spans                     [_NumSizeClasses]*[]*xSpan //预分配,spans很短，不存在引用超长，第一个为当前正在使用的，第二个为预先分配的span
+	spans                     [_NumSizeClasses]*[]*xSpan // 预分配,spans很短，不存在引用超长，第一个为当前正在使用的，第二个为预先分配的span
 	heap                      *xHeap
 	spanFact                  float32
 	specialPageNumCoefficient [_NumSizeClasses]uint8
-	//1750 + 950
+	// 1750 + 950
 	classSpan [_NumSizeClasses]*xClassSpan
 }
 
@@ -106,8 +106,8 @@ func (sp *xSpanPool) AllocSlice(eleSize uintptr, cap, len uintptr) (p unsafe.Poi
 
 var is bool
 
-//通过增加key、value长度使得分配到不同span
-//todo 擦除数据
+// 通过增加key、value长度使得分配到不同span
+// todo 擦除数据
 func (sp *xSpanPool) Alloc(size uintptr) (p unsafe.Pointer, err error) {
 	if size > _MaxSmallSize {
 		pageNum := Align(size, _PageSize) / _PageSize
@@ -156,14 +156,14 @@ func (sp *xSpanPool) Alloc(size uintptr) (p unsafe.Pointer, err error) {
 		return unsafe.Pointer(ptr), nil
 	}
 	if idex > 0 && has {
-		//idx前已经使用完了,删除前面满了的。
+		// idx前已经使用完了,删除前面满了的。
 		sp.addInuse(sizeclass)
 		sp.growSpan(sizeclass, RemoveHead, spanGen)
 		return unsafe.Pointer(ptr), nil
 	}
 	// 同步扩容
 	if !has {
-		//所有的span都没有空位，需要阻塞同步分配 产生新的class span，释放所有的span
+		// 所有的span都没有空位，需要阻塞同步分配 产生新的class span，释放所有的span
 		if err := sp.growSpan(sizeclass, ExpendSync, spanGen); err != nil {
 			return nil, err
 		}
@@ -323,6 +323,6 @@ func newXConcurrentHashMapSpanPool(heap *xHeap, spanFact float32, pageNumCoeffic
 	return sp, nil
 }
 
-//启动利用class_to_allocnpages 预先分配span。
-//alloc超过阈值，异步预分配
-//alloc没有空闲时候，同步分配（防止分配太多）。
+// 启动利用class_to_allocnpages 预先分配span。
+// alloc超过阈值，异步预分配
+// alloc没有空闲时候，同步分配（防止分配太多）。
