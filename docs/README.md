@@ -21,5 +21,8 @@ XMM 测试程序快速预览下载使用：
 
 ### 2. [XMM 设计实现技术调研参考](https://github.com/heiyeluren/XMM/blob/main/docs/XMM-InvestigateResearch.md)
 
+### 3. [XMM 内部技术设计问题Q&A](https://github.com/heiyeluren/xmm/blob/main/docs/XMM-QA.md)
+
+
 <br />
 <br />
