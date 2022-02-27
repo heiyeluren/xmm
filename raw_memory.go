@@ -26,7 +26,7 @@ import (
 	"unsafe"
 )
 
-//用来管理mmap申请的内存，用于实际存放地址的元数据
+// 用来管理mmap申请的内存，用于实际存放地址的元数据
 type xRawMemory struct {
 	addr uintptr
 	down bool
@@ -40,7 +40,7 @@ func newXRawMemory(byteNum int) (*xRawMemory, error) {
 	if err != nil {
 		return nil, err
 	}
-	//log.Printf(" newXRawMemory(mmap) byteNum:%d byte \n", byteNum)
+	// log.Printf(" newXRawMemory(mmap) byteNum:%d byte \n", byteNum)
 	ptr := unsafe.Pointer(&mem[0])
 	xrm := &xRawMemory{addr: uintptr(ptr), mem: mem}
 	return xrm, nil
@@ -64,9 +64,9 @@ func init() {
 
 //
 type xRawMemoryPool struct {
-	//空闲free
+	// 空闲free
 	frees []*block
-	//申请内存，头插法
+	// 申请内存，头插法
 	xrm   *xRawMemory
 	index uintptr
 	lock  sync.RWMutex
@@ -82,7 +82,7 @@ func (xrmp *xRawMemoryPool) alloc(byteSize uintptr) (ptr unsafe.Pointer, err err
 		return nil, err
 	}
 	if offset == 0 {
-		//扩容
+		// 扩容
 		xrm, err := newXRawMemory(metadataRawMemoryBytes)
 		if err != nil {
 			return nil, err
@@ -114,7 +114,7 @@ func (xrmp *xRawMemoryPool) grow() error {
 	return nil
 }
 
-//通过cas获取空闲的offset
+// 通过cas获取空闲的offset
 func (xrmp *xRawMemoryPool) freeOffset(size uintptr) (uintptr, error) {
 	if size > metadataRawMemoryBytes {
 		return 0, errors.New("size is over")

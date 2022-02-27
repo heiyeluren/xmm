@@ -19,12 +19,13 @@
 package xmm
 
 import (
-	"github.com/spf13/cast"
 	"log"
 	"runtime/debug"
 	"sync"
 	"sync/atomic"
 	"unsafe"
+
+	"github.com/spf13/cast"
 )
 
 func Recover() {
@@ -37,7 +38,7 @@ func Recover() {
 	}
 }
 
-// align returns the smallest y >= x such that y % a == 0.
+// Align returns the smallest y >= x such that y % a == 0.
 func Align(x, a uintptr) uintptr {
 	if a < 1 {
 		return x
@@ -114,10 +115,10 @@ var oneBitCount = [256]uint8{
 	4, 5, 5, 6, 5, 6, 6, 7,
 	5, 6, 6, 7, 6, 7, 7, 8}
 
-//mSpanList 支持并发的操作
+// mSpanList 支持并发的操作
 type mSpanList struct {
 	first *xSpan // first span in list, or nil if none
-	//last  *xSpan // last span in list, or nil if none
+	// last  *xSpan // last span in list, or nil if none
 	lock sync.Mutex
 }
 
@@ -135,7 +136,7 @@ func (list *mSpanList) insert(span *xSpan) {
 		if first == nil && atomic.CompareAndSwapPointer(addr, nil, unsafe.Pointer(span)) {
 			return
 		}
-		//先将新插入的赋值first，这时候会断裂为两个链。然后再赋值。
+		// 先将新插入的赋值first，这时候会断裂为两个链。然后再赋值。
 		if first != nil && atomic.CompareAndSwapPointer(addr, first, unsafe.Pointer(span)) {
 			span.next = (*xSpan)(first)
 			return
@@ -171,7 +172,7 @@ func (list *mSpanList) move(span *xSpan) {
 			}
 			pre = node
 		}
-		//并发cas
+		// 并发cas
 		var addr *unsafe.Pointer
 		if pre != nil {
 			addr = (*unsafe.Pointer)(unsafe.Pointer(&pre.next))

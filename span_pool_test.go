@@ -78,7 +78,7 @@ func TestSpanLock(t *testing.T) {
 	}
 	wait.Wait()
 	fmt.Printf("%+v \nfreeIndex:%d %d %d \n", cs, cs.freeIndex, allcCnt*4, allcCnt)
-	//todo 问题,好像自己实现的锁有问题，应该是CAS 和 悲观锁冲突了。只能选一个。cas和锁必须互斥
+	// todo 问题,好像自己实现的锁有问题，应该是CAS 和 悲观锁冲突了。只能选一个。cas和锁必须互斥
 	// 锁里面有CAS，是否考虑用锁呢？
 	<-time.After(time.Second)
 	if val := atomic.LoadUintptr(&cs.freeIndex); val != allcCnt*4 {

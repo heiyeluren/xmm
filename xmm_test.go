@@ -20,7 +20,6 @@ package xmm
 
 import (
 	"fmt"
-	"github.com/spf13/cast"
 	"log"
 	"math/rand"
 	"net/http"
@@ -33,6 +32,8 @@ import (
 	"testing"
 	"time"
 	"unsafe"
+
+	"github.com/spf13/cast"
 )
 
 func TestName(t *testing.T) {
@@ -302,8 +303,8 @@ func BenchmarkRBTree_ClearxSpanPool(b *testing.B) {
 	})
 }
 
-//数组、string(序列化后内容)、slice需要知道其长度。别的都不需要知道，固定的。
-//释放内容的时候需要传入大小和offset
+// 数组、string(序列化后内容)、slice需要知道其长度。别的都不需要知道，固定的。
+// 释放内容的时候需要传入大小和offset
 func TestString(t *testing.T) {
 	h, err := newXHeap()
 	if err != nil {
@@ -320,12 +321,12 @@ func TestString(t *testing.T) {
 			t.Fatal(err)
 		}
 		/*if pre > 0 && uintptr(p)-pre != 128 {
-			t.Log("重新分配了一个span地址")
-		} else {
-			t.Log("同一个span中")
-		}
-		pre = uintptr(unsafe.Pointer(p))
-		v := *(p)*/
+		  	t.Log("重新分配了一个span地址")
+		  } else {
+		  	t.Log("同一个span中")
+		  }
+		  pre = uintptr(unsafe.Pointer(p))
+		  v := *(p)*/
 		fmt.Println(p)
 	}
 }
@@ -517,7 +518,7 @@ func TestMm_Free(t *testing.T) {
 	size := unsafe.Sizeof(User{})
 	for i := 0; i < 1000; i++ {
 		if i%85 == 0 && i > 0 {
-			//panic清空前85个
+			// panic清空前85个
 			for j := 0; j < 85; j++ {
 				if err := sp.Free(uintptr(us[j])); err != nil {
 					t.Fatal(err)
@@ -549,7 +550,7 @@ func TestMm_Free2(t *testing.T) {
 	size := unsafe.Sizeof(User{})
 	for i := 0; i < 20000; i++ {
 		if i == 12000 {
-			//删除前600个偶数对象
+			// 删除前600个偶数对象
 			for j := 0; j < 6000; j += 2 {
 				if err := sp.Free(uintptr(us[j])); err != nil {
 					t.Fatal(err)
@@ -585,7 +586,7 @@ func TestMm2(t *testing.T) {
 	}
 
 	uSize := unsafe.Sizeof(User{})
-	//t1 := time.Now()
+	// t1 := time.Now()
 	us := make(chan uintptr, 1000000)
 	var wait sync.WaitGroup
 	wait.Add(10)
@@ -716,5 +717,5 @@ func TestAlloc_Benchmark(t *testing.T) {
 		}(j)
 	}
 	wait.Wait()
-	fmt.Println(time.Now().Sub(now), 10*1000000/1000000, "百万") //300w ops
+	fmt.Println(time.Now().Sub(now), 10*1000000/1000000, "百万") // 300w ops
 }

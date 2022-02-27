@@ -1,20 +1,22 @@
 # XMM 参考调研 - TCMalloc&Go 内存管理调研
 
 - [XMM 参考调研 - TCMalloc&Go 内存管理调研](#xmm-参考调研---tcmallocgo-内存管理调研)
-  - [1、调研背景](#1调研背景)
-  - [2、TcMalloc 工作机制](#2tcmalloc-工作机制)
-    - [数据模型](#数据模型)
-  - [3、Go 内存分配机制](#3go-内存分配机制)
-    - [3.1、数据模型](#31数据模型)
-    - [3.2、内存初始化](#32内存初始化)
-    - [3.2、对象申请内存](#32对象申请内存)
-    - [相关参考文档](#相关参考文档)
+    - [1、调研背景](#1调研背景)
+    - [2、TcMalloc 工作机制](#2tcmalloc-工作机制)
+        - [数据模型](#数据模型)
+    - [3、Go 内存分配机制](#3go-内存分配机制)
+        - [3.1、数据模型](#31数据模型)
+        - [3.2、内存初始化](#32内存初始化)
+        - [3.2、对象申请内存](#32对象申请内存)
+        - [相关参考文档](#相关参考文档)
 
 ## 1、调研背景
 
-为了解决 Golang 的大内存 GC 问题，需要深入了解 Golang 的内存分配原理，Golang 的内存分配器思想来源于 TCMalloc，他继承了 TCMalloc 的高性能、高内存利用率等优点。实际上与 TCMalloc 有区别的，同时融入了自己的定制化内容。现在我们先了解下 TCMalloc 的实现原理。
+为了解决 Golang 的大内存 GC 问题，需要深入了解 Golang 的内存分配原理，Golang 的内存分配器思想来源于 TCMalloc，他继承了 TCMalloc 的高性能、高内存利用率等优点。实际上与 TCMalloc
+有区别的，同时融入了自己的定制化内容。现在我们先了解下 TCMalloc 的实现原理。
 
-说明：TcMalloc - Multi-threaded memory allocate（Goolge 开发的内存分配器）[github.com/google/tcmalloc](https://github.com/google/tcmalloc)
+说明：TcMalloc - Multi-threaded memory allocate（Goolge
+开发的内存分配器）[github.com/google/tcmalloc](https://github.com/google/tcmalloc)
 
 <br />
 
@@ -24,7 +26,8 @@
 
 <br />
 
-在多线程环境下，TCMalloc 可以极大减少锁资源的争夺。针对 small object，TCMalloc 几乎就是 lock free 的。针对 large object，TCMalloc 采用高效的细粒度的自旋锁。同时内存也做了更好管理更加精细化，较少了内存空洞。
+在多线程环境下，TCMalloc 可以极大减少锁资源的争夺。针对 small object，TCMalloc 几乎就是 lock free 的。针对 large object，TCMalloc
+采用高效的细粒度的自旋锁。同时内存也做了更好管理更加精细化，较少了内存空洞。
 
 <br />
 
@@ -63,7 +66,6 @@
 ![这是图片](https://raw.githubusercontent.com/heiyeluren/XMM/main/docs/img/ir03.png)
 
 <br />
-
 
 ### 3.2、对象申请内存
 

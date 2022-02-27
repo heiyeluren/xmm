@@ -30,19 +30,19 @@ func TestMarkBits(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	//fmt.Println(String(bit, 4), len(String(bit, 4)))
+	// fmt.Println(String(bit, 4), len(String(bit, 4)))
 
 	bytep, mask := bit.bitp(objIndex)
 	mb := markBits{bytep, mask, objIndex}
 	fmt.Printf("bytep:%.32b ,  mask:%.32b isMarked:%t \n", *bytep, mask, mb.isMarked())
 	mb.setMarked()
-	//fmt.Println(String(bit, 4))
+	// fmt.Println(String(bit, 4))
 	bytep, mask = bit.bitp(objIndex)
 	mb = markBits{bytep, mask, objIndex}
 
 	fmt.Printf("bytep:%.32b ,  mask:%.32b isMarked:%t \n", *bytep, mask, mb.isMarked())
 
-	//fmt.Println(String(bit, 4))
+	// fmt.Println(String(bit, 4))
 	bytep, mask = bit.bitp(uintptr(5000000))
 	mb = markBits{bytep, mask, objIndex}
 

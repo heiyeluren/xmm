@@ -332,7 +332,7 @@ func (root *xTreap) removeNode(t *treapNode) error {
 		root.treap = nil
 	}
 	// Return the found treapNode's span after freeing the treapNode.
-	//mheap_.treapalloc.free(unsafe.Pointer(t))
+	// mheap_.treapalloc.free(unsafe.Pointer(t))
 	return nil
 }
 

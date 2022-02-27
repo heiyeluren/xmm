@@ -29,22 +29,22 @@ type xSpan struct {
 	lock           sync.Mutex
 	classIndex     uint    // class的索引
 	classSize      uintptr //  classSpan的长度
-	startAddr      uintptr //bit索引
+	startAddr      uintptr // bit索引
 	npages         uintptr
 	freeIndex      uintptr
 	extensionPoint uintptr // 扩容负载因子
 
-	//span中可以分配的个数
+	// span中可以分配的个数
 	nelems uintptr
 
-	//bitmap 每个bit标识地址是否被分配(用来分配计算空闲地址)
-	//1111111111111111111111111111111111111111111111111111111100000000 从右往左，遇到第一个1开始可以分配。
+	// bitmap 每个bit标识地址是否被分配(用来分配计算空闲地址)
+	// 1111111111111111111111111111111111111111111111111111111100000000 从右往左，遇到第一个1开始可以分配。
 	allocCache uint64
 
-	//allocCache 保存的指针
+	// allocCache 保存的指针
 	allocBits *gcBits
 
-	//gc标记的bitmap（1为不需要的）
+	// gc标记的bitmap（1为不需要的）
 	gcmarkBits *gcBits
 
 	// gc
@@ -56,7 +56,7 @@ type xSpan struct {
 	allocCount uintptr
 
 	next *xSpan
-	//pre  *xSpan
+	// pre  *xSpan
 	heap *xHeap
 }
 
@@ -117,7 +117,7 @@ func (s *xSpan) isFull() bool {
 	return (val+1)*s.classSize >= _PageSize*s.npages
 }
 
-//freeIndex增加：
+// freeIndex增加：
 // 1、首先使用自旋CAS获取空闲索引
 // 2、CAS失败，则锁加重为排他锁
 // 3、必须内存对齐
@@ -163,7 +163,7 @@ func (s *xSpan) markBitsForIndex(objIndex uintptr) markBits {
 
 func (s *xSpan) setMarkBitsForIndex(objIndex uintptr) {
 	uint32p, mask := s.gcmarkBits.bitp(objIndex)
-	//fmt.Printf("xSpan:%d size:%d\n", uintptr(unsafe.Pointer(s)), s.classSize)
+	// fmt.Printf("xSpan:%d size:%d\n", uintptr(unsafe.Pointer(s)), s.classSize)
 	s.heap.addFreeCapacity(int64(s.classSize))
 	markBits{uint32p, mask, objIndex}.setMarked()
 }
@@ -172,7 +172,7 @@ func (s *xSpan) markBitsForBase() markBits {
 	return markBits{(*uint32)(s.gcmarkBits), uint32(1), 0}
 }
 
-//当前的allocCache中的最后一个bit空位和free位置。
+// 当前的allocCache中的最后一个bit空位和free位置。
 func (s *xSpan) nextFreeFast() uintptr {
 	if s.freeIndex >= s.nelems {
 		return 0
@@ -210,7 +210,7 @@ func (s *xSpan) nextFree() (v uintptr, has bool) {
 	return
 }
 
-//当前allocCache没该内容
+// 当前allocCache没该内容
 func (s *xSpan) nextFreeIndex() (uintptr, bool) {
 	sfreeindex := s.freeIndex
 	snelems := s.nelems
@@ -261,7 +261,7 @@ func (s *xSpan) refillAllocCache(whichByte uintptr) {
 	s.allocCache = aCache
 }
 
-//得到GC标记数目
+// 得到GC标记数目
 func (s *xSpan) countGcMarkBits() uintptr {
 	count := uintptr(0)
 	maxIndex := s.nelems / 32

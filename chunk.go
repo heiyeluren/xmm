@@ -18,7 +18,7 @@
 
 package xmm
 
-//连续page的管理
+// 连续page的管理
 type xChunk struct {
 	startAddr uintptr
 	npages    uintptr

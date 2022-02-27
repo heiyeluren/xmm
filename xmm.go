@@ -27,30 +27,30 @@ import (
 var NilError = errors.New("params is illegal")
 
 type spanPool interface {
-	//Alloc 分配一般对象
+	// Alloc 分配一般对象
 	Alloc(byteSize uintptr) (p unsafe.Pointer, err error)
 
-	//AllocSlice 分配slice
+	// AllocSlice 分配slice
 	AllocSlice(eleSize uintptr, cap, len uintptr) (p unsafe.Pointer, err error)
 
-	//Free 释放内存
+	// Free 释放内存
 	Free(addr uintptr) error
 
-	//Copy2 byte内存拷贝(拷贝两个) item1-> newItem1   item2-> newItem2
+	// Copy2 byte内存拷贝(拷贝两个) item1-> newItem1   item2-> newItem2
 	Copy2(item1 []byte, item2 []byte) (newItem1 []byte, newItem2 []byte, err error)
 }
 
 type stringAllocator interface {
-	//From 分配string xmm内存，并拷贝到xmm内存中
+	// From 分配string xmm内存，并拷贝到xmm内存中
 	From(content string) (p string, err error)
 
-	//From2 分配2个string xmm内存，并拷贝到xmm内存中
+	// From2 分配2个string xmm内存，并拷贝到xmm内存中
 	From2(item1 string, item2 string) (newItem1 string, newItem2 string, err error)
 
-	//FromInAddr 将contents拷贝到addr内存地址中
+	// FromInAddr 将contents拷贝到addr内存地址中
 	FromInAddr(addr uintptr, contents ...string) (p []*string, err error)
 
-	//FreeString 释放字符串
+	// FreeString 释放字符串
 	FreeString(content string) error
 }
 
@@ -63,10 +63,10 @@ type XMemory interface {
 	spanPool
 	stringAllocator
 
-	//RawAlloc 分配原始内存
+	// RawAlloc 分配原始内存
 	RawAlloc(pageNum uintptr) (p *Chunk, err error)
 
-	//GetPageSize 得到页大小
+	// GetPageSize 得到页大小
 	GetPageSize() uintptr
 }
 
