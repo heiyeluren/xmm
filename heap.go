@@ -149,6 +149,8 @@ func (xh *xHeap) allocRawSpan(pageNum uintptr) (span *xSpan, err error) {
 	span.freeIndex = 0
 	span.npages = pageNum
 	span.startAddr = chunk.startAddr
+	var lock sync.Mutex
+	span.lock = lock
 	return span, nil
 }
 
