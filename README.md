@@ -107,6 +107,14 @@ XMM 模块可以达到完美的自主内存 申请/释放/管理 的功能，并
 
 <br />
 <br />
+    
+## XMM性能测试数据
+    
+#### [XMM性能测试情况](https://github.com/heiyeluren/xmm/blob/main/docs/XMM-Benchmark.md)
+    
+    
+<br />
+<br />
 
 ## XMM 快速使用入门
 
