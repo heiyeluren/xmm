@@ -12,8 +12,8 @@
 
 ### 测试程序
 
-- [分配性能测试程序](https://github.com/heiyeluren/xmm/blob/benchmark-xmm/benchmark/alloc_test.go)
-- [GC性能测试程序](https://github.com/heiyeluren/xmm/blob/benchmark-xmm/benchmark/gc_test.go)
+- [分配性能测试程序](https://github.com/heiyeluren/xmm/blob/main/benchmark/alloc_test.go)
+- [GC性能测试程序](https://github.com/heiyeluren/xmm/blob/main/benchmark/gc_test.go)
 
 
 <br />
