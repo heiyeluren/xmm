@@ -307,8 +307,6 @@ func (sp *xSpanPool) Copy2(item1 []byte, item2 []byte) (newItem1 []byte, newItem
 	return str1, str2, err
 }
 
-var TestBbulks uintptr
-
 func (sp *xSpanPool) Free(addr uintptr) error {
 	return sp.heap.free(addr)
 }

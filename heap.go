@@ -374,9 +374,6 @@ func (xh *xHeap) sweepFullSpan(span *xSpan) (sweep bool, size uint, err error) {
 		}
 		// 增加chunks、free、addrMap
 		chunk := (*xChunk)(chunkP)
-		if TestBbulks == span.startAddr {
-			fmt.Println("ssssssss")
-		}
 		chunk.startAddr = span.startAddr
 		chunk.npages = span.npages
 		if err := xh.ChunkInsert(chunk); err != nil {
