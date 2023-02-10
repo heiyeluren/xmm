@@ -152,10 +152,10 @@ XMM 模块可以达到完美的自主内存 申请/释放/管理 的功能，并
 
 XMM 目前是早期版本，总体性能比较好，目前也在另外一个自研的 XMap 模块中使用，当然也少不了一些问题和 bug，欢迎大家一起共创，或者直接提交 PR 等等。
 
-欢迎加入 XMM 技术交流微信群，要加群，可以先添加如下微信让对方拉入群：<br />
-（如无法看到图片，请手工添加微信： heiyeluren2017 ）
+欢迎加入 XMM 技术交流微信群，要加群，可以先关注添加如下公众号：<br />
+（如无法看到图片，请直接微信里搜索公众号“黑夜路人技术”，关注发送“XMM加群”字样信息即可 ）
 
-<img src=https://raw.githubusercontent.com/heiyeluren/xmm/main/docs/img/heiyeluren2017-wx.jpg width=40% />
+<img src=https://raw.githubusercontent.com/heiyeluren/xmm/main/docs/img/heiyeluren-tech-wx-public.jpg width=40% />
 
 
 
